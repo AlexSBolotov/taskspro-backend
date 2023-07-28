@@ -3,10 +3,14 @@ const Joi = require("joi");
 const { handleMongooseError } = require("../helpers");
 
 const emailRegexp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-const subscriptionTypes = ["starter", "pro", "business"];
+const themeTypes = ["light", "dark", "violet"];
 
 const userSchema = new Schema(
   {
+    name: {
+      type: String,
+      required: [true, "Username is required"],
+    },
     password: {
       type: String,
       required: [true, "Set password for user"],
@@ -17,10 +21,13 @@ const userSchema = new Schema(
       required: [true, "Email is required"],
       unique: true,
     },
-    subscription: {
+    theme: {
       type: String,
-      enum: subscriptionTypes,
-      default: "starter",
+      enum: themeTypes,
+      default: "light",
+    },
+    avatarURL: {
+      type: String,
     },
     token: {
       type: String,
@@ -33,17 +40,20 @@ const userSchema = new Schema(
 userSchema.post("save", handleMongooseError);
 
 const authUserSchema = Joi.object({
+  name: Joi.string().required().messages({
+    "any.required": "missing required name field",
+  }),
   email: Joi.string().pattern(emailRegexp).required().messages({
     "any.required": "missing required email field",
   }),
   password: Joi.string().required().messages({
     "any.required": "missing required password field",
   }),
-  subscription: Joi.string().valid(...subscriptionTypes),
+  theme: Joi.string().valid(...themeTypes),
 });
 const updateUserSubscription = Joi.object({
   subscription: Joi.string()
-    .valid(...subscriptionTypes)
+    .valid(...themeTypes)
     .required(),
 });
 
