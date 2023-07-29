@@ -29,12 +29,12 @@ const { Board } = require("../models/board.model");
 // };
 const postBoard = async (req, res) => {
   const { _id: owner } = req.user;
-  const result = await Contact.create({ ...req.body, owner });
+  const result = await Board.create({ ...req.body, owner });
   res.status(201).json(result);
 };
 const updateBoard = async (req, res) => {
   const { id } = req.params;
-  const result = await Contact.findByIdAndUpdate(id, req.body, { new: true });
+  const result = await Board.findByIdAndUpdate(id, req.body, { new: true });
   if (!result) {
     throw HttpError(404, `Not found`);
   }
@@ -50,7 +50,7 @@ const updateBoard = async (req, res) => {
 // };
 const deleteBoard = async (req, res) => {
   const { id } = req.params;
-  const result = await Contact.findByIdAndDelete(id);
+  const result = await Board.findByIdAndDelete(id);
   if (!result) {
     throw HttpError(404, "Not found");
   }
