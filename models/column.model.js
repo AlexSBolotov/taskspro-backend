@@ -6,7 +6,7 @@ const columnSchema = new Schema(
   {
     title: {
       type: String,
-      required: [true, "Set title for board"],
+      required: [true, "Set title for column"],
       unique: true,
     },
     owner: {
