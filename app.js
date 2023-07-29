@@ -6,6 +6,7 @@ require("dotenv").config();
 const contactsRouter = require("./routes/api/contacts.routes");
 const boardsRouter = require("./routes/api/boards.routes");
 const columnsRouter = require("./routes/api/columns.routes");
+const tasksRouter = require("./routes/api/tasks.routes");
 const usersRouter = require("./routes/api/auth.routes");
 
 const app = express();
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use("/api/contacts", contactsRouter);
 app.use("/api/boards", boardsRouter);
 app.use("/api/columns", columnsRouter);
+app.use("/api/tasks", tasksRouter);
 app.use("/users", usersRouter);
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
