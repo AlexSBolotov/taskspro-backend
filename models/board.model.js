@@ -35,7 +35,7 @@ const boardSchema = new Schema(
     title: {
       type: String,
       required: [true, "Set title for board"],
-      unique: true,
+      // unique: true,
     },
     icon: {
       type: String,
@@ -47,11 +47,17 @@ const boardSchema = new Schema(
       enum: backgroundTypes,
       default: "00",
     },
-    owner: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: "user",
       required: true,
     },
+    columns: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "column",
+      },
+    ],
   },
   { versionKey: false }
 );

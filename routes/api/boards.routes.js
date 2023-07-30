@@ -6,7 +6,7 @@ const { schemas } = require("../../models/board.model");
 
 // router.get("/", authenticate, ctrl.geAllContacts);
 
-// router.get("/:id", authenticate, isValidId, ctrl.getOneContact);
+router.get("/:id", authenticate, isValidId, ctrl.getOneBoard);
 
 router.post(
   "/",
