@@ -14,6 +14,16 @@ const columnSchema = new Schema(
       ref: "user",
       required: true,
     },
+    board: {
+      type: Schema.Types.ObjectId,
+      ref: "board",
+    },
+    tasks: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "task",
+      },
+    ],
   },
   { versionKey: false }
 );
