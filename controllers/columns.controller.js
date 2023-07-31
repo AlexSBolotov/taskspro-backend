@@ -1,9 +1,19 @@
 const { HttpError, ctrlWrapper } = require("../helpers");
 const { Column } = require("../models/column.model");
+const { Board } = require("../models/board.model");
 
 const postColumn = async (req, res) => {
-  const { _id: owner } = req.user;
-  const result = await Column.create({ ...req.body, owner });
+  const { _id: user } = req.user;
+  const { board } = req.body;
+  console.log(req.body);
+  const result = await Column.create({ ...req.body, user });
+  await Board.findByIdAndUpdate(
+    (_id = board),
+    {
+      $push: { columns: result._id },
+    },
+    { new: true }
+  );
   res.status(201).json(result);
 };
 const updateColumn = async (req, res) => {
@@ -20,6 +30,13 @@ const deleteColumn = async (req, res) => {
   if (!result) {
     throw HttpError(404, "Not found");
   }
+  await Board.findByIdAndUpdate(
+    (_id = result.board),
+    {
+      $pull: { columns: result._id },
+    },
+    { new: true }
+  );
   res.status(200).json({ message: "Column deleted" });
 };
 
