@@ -9,7 +9,7 @@ const taskSchema = new Schema(
     title: {
       type: String,
       required: [true, "Set title for task"],
-      unique: true,
+      // unique: true,
     },
     description: {
       type: String,
@@ -24,18 +24,19 @@ const taskSchema = new Schema(
       type: Date,
       default: Date.now,
     },
-    owner: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: "user",
       required: true,
     },
-    board: {
-      type: Schema.Types.ObjectId,
-      ref: "board",
-    },
+    // board: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: "board",
+    // },
     column: {
       type: Schema.Types.ObjectId,
       ref: "column",
+      required: true,
     },
   },
   { versionKey: false }
@@ -50,6 +51,9 @@ const addTaskSchema = Joi.object({
   description: Joi.string(),
   priority: Joi.string().valid(...ptiorityTypes),
   deadline: Joi.date(),
+  column: Joi.string().required().messages({
+    "any.required": "missing required column field",
+  }),
 });
 const updateTaskSchema = Joi.object({
   title: Joi.string().required().messages({
