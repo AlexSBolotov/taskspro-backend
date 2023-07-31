@@ -39,7 +39,7 @@ const taskSchema = new Schema(
       required: true,
     },
   },
-  { versionKey: false }
+  { versionKey: false, timestamps: true }
 );
 
 taskSchema.post("save", handleMongooseError);

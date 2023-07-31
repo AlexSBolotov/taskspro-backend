@@ -5,7 +5,6 @@ const { Board } = require("../models/board.model");
 const postColumn = async (req, res) => {
   const { _id: user } = req.user;
   const { board } = req.body;
-  console.log(req.body);
   const result = await Column.create({ ...req.body, user });
   await Board.findByIdAndUpdate(
     (_id = board),

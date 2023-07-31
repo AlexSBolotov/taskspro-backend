@@ -11,7 +11,7 @@ router.post(
   ctrl.postTask
 );
 
-router.put(
+router.patch(
   "/:id",
   authenticate,
   isValidId,

@@ -32,6 +32,14 @@ const getOneBoard = async (req, res) => {
     },
     populate: {
       path: "tasks",
+      select: {
+        _id: 1,
+        updatedAt: 1,
+        title: 1,
+        description: 1,
+        priority: 1,
+        deadline: 1,
+      },
     },
   });
   if (!result) {
