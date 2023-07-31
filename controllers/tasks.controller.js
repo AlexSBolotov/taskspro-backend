@@ -1,9 +1,18 @@
 const { HttpError, ctrlWrapper } = require("../helpers");
+const { Column } = require("../models/column.model");
 const { Task } = require("../models/task.model");
 
 const postTask = async (req, res) => {
-  const { _id: owner } = req.user;
-  const result = await Task.create({ ...req.body, owner });
+  const { _id: user } = req.user;
+  const { column } = req.body;
+  const result = await Task.create({ ...req.body, user });
+  await Column.findByIdAndUpdate(
+    (_id = column),
+    {
+      $push: { tasks: result._id },
+    },
+    { new: true }
+  );
   res.status(201).json(result);
 };
 const updateTask = async (req, res) => {
@@ -20,6 +29,13 @@ const deleteTask = async (req, res) => {
   if (!result) {
     throw HttpError(404, "Not found");
   }
+  await Column.findByIdAndUpdate(
+    (_id = result.column),
+    {
+      $pull: { tasks: result._id },
+    },
+    { new: true }
+  );
   res.status(200).json({ message: "Task deleted" });
 };
 
