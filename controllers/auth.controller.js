@@ -17,8 +17,9 @@ const registerUser = async (req, res) => {
   const newUser = await User.create({
     ...req.body,
     password: hashPassword,
+    theme: "dark",
     avatarURL: "",
-    activeBoard: "",
+    boards: [],
   });
 
   const { _id: id } = newUser;

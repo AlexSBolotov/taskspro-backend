@@ -30,6 +30,7 @@ const userSchema = new Schema(
     },
     avatarURL: {
       type: String,
+      default: "",
     },
     boards: [
       {
