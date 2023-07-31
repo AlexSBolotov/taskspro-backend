@@ -72,10 +72,16 @@ const updateTaskSchema = Joi.object({
     "any.required": "missing required deadline field",
   }),
 });
+const replaceTaskSchema = Joi.object({
+  column: Joi.string().required().messages({
+    "any.required": "missing required column field",
+  }),
+});
 
 const schemas = {
   addTaskSchema,
   updateTaskSchema,
+  replaceTaskSchema,
 };
 const Task = model("task", taskSchema);
 

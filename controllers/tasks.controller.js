@@ -17,10 +17,39 @@ const postTask = async (req, res) => {
 };
 const updateTask = async (req, res) => {
   const { id } = req.params;
+
   const result = await Task.findByIdAndUpdate(id, req.body, { new: true });
   if (!result) {
     throw HttpError(404, `Not found`);
   }
+
+  res.status(200).json(result);
+};
+const replaceTask = async (req, res) => {
+  const { id } = req.params;
+  // const { column: oldColumn } = req.task;
+  const { column: newColumn } = req.body;
+  console.log(newColumn);
+  const { column: oldColumn } = await Task.findById(id);
+  console.log(oldColumn);
+  const result = await Task.findByIdAndUpdate(id, req.body, { new: true });
+  if (!result) {
+    throw HttpError(404, `Not found`);
+  }
+  await Column.findByIdAndUpdate(
+    (_id = oldColumn),
+    {
+      $pull: { tasks: result._id },
+    },
+    { new: true }
+  );
+  await Column.findByIdAndUpdate(
+    (_id = newColumn),
+    {
+      $push: { tasks: result._id },
+    },
+    { new: true }
+  );
   res.status(200).json(result);
 };
 const deleteTask = async (req, res) => {
@@ -42,5 +71,6 @@ const deleteTask = async (req, res) => {
 module.exports = {
   postTask: ctrlWrapper(postTask),
   updateTask: ctrlWrapper(updateTask),
+  replaceTask: ctrlWrapper(replaceTask),
   deleteTask: ctrlWrapper(deleteTask),
 };

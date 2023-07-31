@@ -19,6 +19,14 @@ router.patch(
   ctrl.updateTask
 );
 
+router.patch(
+  "/:id/replace",
+  authenticate,
+  isValidId,
+  validateBody(schemas.replaceTaskSchema, `missing fields`),
+  ctrl.replaceTask
+);
+
 router.delete("/:id", authenticate, isValidId, ctrl.deleteTask);
 
 module.exports = router;
