@@ -59,7 +59,7 @@ const boardSchema = new Schema(
       },
     ],
   },
-  { versionKey: false }
+  { versionKey: false, timestamps: true }
 );
 
 boardSchema.post("save", handleMongooseError);

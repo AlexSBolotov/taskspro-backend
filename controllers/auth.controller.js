@@ -27,18 +27,31 @@ const registerUser = async (req, res) => {
 
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1d" });
 
-  await User.findByIdAndUpdate(id, { token });
+  await User.findByIdAndUpdate(id, { token }, { new: true })
+    .populate("boards", { _id: 1, title: 1, icon: 1, updatedAt: 1 })
+    .then((user) => {
+      res.json({
+        token: token,
+        user: {
+          name: user.name,
+          email: user.email,
+          theme: user.theme,
+          avatarURL: user.avatarURL,
+          boards: user.boards,
+        },
+      });
+    });
 
-  res.status(201).json({
-    token: token,
-    user: {
-      name: newUser.name,
-      email: newUser.email,
-      theme: newUser.theme,
-      avatarURL: newUser.avatarURL,
-      boards: newUser.boards,
-    },
-  });
+  // res.status(201).json({
+  //   token: token,
+  //   user: {
+  //     name: newUser.name,
+  //     email: newUser.email,
+  //     theme: newUser.theme,
+  //     avatarURL: newUser.avatarURL,
+  //     boards: newUser.boards,
+  //   },
+  // });
 };
 
 const loginUser = async (req, res) => {
@@ -54,30 +67,29 @@ const loginUser = async (req, res) => {
   const payload = { id: user._id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
   await User.findByIdAndUpdate(user._id, { token }, { new: true })
-    .populate("boards")
+    .populate("boards", { _id: 1, title: 1, icon: 1, updatedAt: 1 })
     .then((user) => {
-      res.json(user);
+      res.json({
+        token: token,
+        user: {
+          name: user.name,
+          email: user.email,
+          theme: user.theme,
+          avatarURL: user.avatarURL,
+          boards: user.boards,
+        },
+      });
     });
-  // res.status(200).json({
-  //   token: token,
-  //   user: {
-  //     name: user.name,
-  //     email: user.email,
-  //     theme: user.theme,
-  //     avatarURL: user.avatarURL,
-  //     boards: user.boards,
-  //   },
-  // });
 };
 
 const getCurrentUser = async (req, res) => {
-  const { email, name, theme, avatarURL, activeBoard } = req.user;
+  const { email, name, theme, avatarURL, boards } = req.user;
   res.status(200).json({
     name,
     email,
     theme,
     avatarURL,
-    activeBoard,
+    boards,
   });
 };
 
