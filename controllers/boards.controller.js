@@ -24,6 +24,12 @@ const getOneBoard = async (req, res) => {
   const { id } = req.params;
   const result = await Board.findById(id).populate({
     path: "columns",
+    select: {
+      _id: 1,
+      updatedAt: 1,
+      title: 1,
+      tasks: 1,
+    },
     populate: {
       path: "tasks",
     },
@@ -31,7 +37,14 @@ const getOneBoard = async (req, res) => {
   if (!result) {
     throw HttpError(404, `Not found`);
   }
-  res.status(200).json(result);
+  const { _id, title, icon, background, columns, updatedAt } = result;
+  res.status(200).json({
+    _id,
+    title,
+    icon,
+    background,
+    columns,
+  });
 };
 const postBoard = async (req, res) => {
   const { _id: user } = req.user;

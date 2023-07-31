@@ -7,9 +7,9 @@ const columnSchema = new Schema(
     title: {
       type: String,
       required: [true, "Set title for column"],
-      unique: true,
+      // unique: true,
     },
-    owner: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: "user",
       required: true,
@@ -17,6 +17,7 @@ const columnSchema = new Schema(
     board: {
       type: Schema.Types.ObjectId,
       ref: "board",
+      required: true,
     },
     tasks: [
       {
@@ -25,7 +26,7 @@ const columnSchema = new Schema(
       },
     ],
   },
-  { versionKey: false }
+  { versionKey: false, timestamps: true }
 );
 
 columnSchema.post("save", handleMongooseError);
@@ -33,6 +34,9 @@ columnSchema.post("save", handleMongooseError);
 const commonColumnSchema = Joi.object({
   title: Joi.string().required().messages({
     "any.required": "missing required title field",
+  }),
+  board: Joi.string().required().messages({
+    "any.required": "missing required board field",
   }),
 });
 
