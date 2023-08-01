@@ -7,13 +7,14 @@ const postColumn = async (req, res) => {
   const { board } = req.body;
   const result = await Column.create({ ...req.body, user });
   await Board.findByIdAndUpdate(
-    (_id = board),
+    board,
     {
       $push: { columns: result._id },
     },
     { new: true }
   );
-  res.status(201).json(result);
+  const { _id, title, updatedAt, tasks } = result;
+  res.status(201).json({ _id, title, updatedAt, tasks });
 };
 const updateColumn = async (req, res) => {
   const { id } = req.params;
@@ -21,7 +22,8 @@ const updateColumn = async (req, res) => {
   if (!result) {
     throw HttpError(404, `Not found`);
   }
-  res.status(200).json(result);
+  const { _id, title, updatedAt, tasks } = result;
+  res.status(200).json({ _id, title, updatedAt, tasks });
 };
 const deleteColumn = async (req, res) => {
   const { id } = req.params;
@@ -36,7 +38,7 @@ const deleteColumn = async (req, res) => {
     },
     { new: true }
   );
-  res.status(200).json({ message: "Column deleted" });
+  res.status(200).json({ id, message: "Column deleted" });
 };
 
 module.exports = {
