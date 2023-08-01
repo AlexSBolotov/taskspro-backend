@@ -21,6 +21,13 @@ router.post('/logout', authenticate, ctrl.logoutUser);
 
 router.get('/current', authenticate, ctrl.getCurrentUser);
 
+router.patch(
+  '/themes',
+  authenticate,
+  validateBody(schemas.updateThemeSchema),
+  ctrl.updateTheme
+);
+
 // router.patch(
 //   '/',
 //   authenticate,
