@@ -1,0 +1,12 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.1",
+    "title": "Tasckpro test",
+    "description": "Backend documentation for Tasckpro-project",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  }
+}
