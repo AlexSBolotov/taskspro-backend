@@ -51,12 +51,14 @@ const getOneBoard = async (req, res) => {
     title,
     icon,
     background,
+    updatedAt,
     columns,
   });
 };
 const postBoard = async (req, res) => {
   const { _id: user } = req.user;
   const result = await Board.create({ ...req.body, user });
+  console.log(result);
   await User.findByIdAndUpdate(
     user._id,
     {
@@ -64,7 +66,8 @@ const postBoard = async (req, res) => {
     },
     { new: true }
   );
-  res.status(201).json(result);
+  const { _id, title, icon, background, updatedAt, columns } = result;
+  res.status(201).json({ _id, title, icon, background, updatedAt, columns });
 };
 const updateBoard = async (req, res) => {
   const { id } = req.params;
@@ -72,7 +75,8 @@ const updateBoard = async (req, res) => {
   if (!result) {
     throw HttpError(404, `Not found`);
   }
-  res.status(200).json(result);
+  const { _id, title, icon, background, updatedAt, columns } = result;
+  res.status(200).json({ _id, title, icon, background, updatedAt, columns });
 };
 // const updateContactStatus = async (req, res) => {
 //   const { id } = req.params;
@@ -96,7 +100,7 @@ const deleteBoard = async (req, res) => {
     },
     { new: true }
   );
-  res.status(200).json({ message: "Board deleted" });
+  res.status(200).json({ id, message: "Board deleted" });
 };
 
 module.exports = {

@@ -7,13 +7,16 @@ const postTask = async (req, res) => {
   const { column } = req.body;
   const result = await Task.create({ ...req.body, user });
   await Column.findByIdAndUpdate(
-    (_id = column),
+    column,
     {
       $push: { tasks: result._id },
     },
     { new: true }
   );
-  res.status(201).json(result);
+  const { _id, title, description, priority, deadline, updatedAt } = result;
+  res
+    .status(201)
+    .json({ _id, title, description, priority, deadline, updatedAt });
 };
 const updateTask = async (req, res) => {
   const { id } = req.params;
@@ -22,8 +25,10 @@ const updateTask = async (req, res) => {
   if (!result) {
     throw HttpError(404, `Not found`);
   }
-
-  res.status(200).json(result);
+  const { _id, title, description, priority, deadline, updatedAt } = result;
+  res
+    .status(200)
+    .json({ _id, title, description, priority, deadline, updatedAt });
 };
 const replaceTask = async (req, res) => {
   const { id } = req.params;
@@ -50,7 +55,7 @@ const replaceTask = async (req, res) => {
     },
     { new: true }
   );
-  res.status(200).json(result);
+  res.status(200).json({ message: "Task replaced" });
 };
 const deleteTask = async (req, res) => {
   const { id } = req.params;
@@ -65,7 +70,7 @@ const deleteTask = async (req, res) => {
     },
     { new: true }
   );
-  res.status(200).json({ message: "Task deleted" });
+  res.status(200).json({ id, message: "Task deleted" });
 };
 
 module.exports = {
