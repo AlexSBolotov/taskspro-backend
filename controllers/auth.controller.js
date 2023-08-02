@@ -42,17 +42,6 @@ const registerUser = async (req, res) => {
         },
       });
     });
-
-  // res.status(201).json({
-  //   token: token,
-  //   user: {
-  //     name: newUser.name,
-  //     email: newUser.email,
-  //     theme: newUser.theme,
-  //     avatarURL: newUser.avatarURL,
-  //     boards: newUser.boards,
-  //   },
-  // });
 };
 
 const loginUser = async (req, res) => {
@@ -115,20 +104,10 @@ const updateTheme = async (req, res) => {
   });
 };
 
-// const updateUserSubscription = async (req, res) => {
-//   const { _id } = req.user;
-//   const result = await User.findByIdAndUpdate(_id, req.body, { new: true });
-//   res.status(200).json({
-//     message: 'Subscription successfully changed',
-//     currentSubscription: result.subscription,
-//   });
-// };
-
 module.exports = {
   registerUser: ctrlWrapper(registerUser),
   loginUser: ctrlWrapper(loginUser),
   getCurrentUser: ctrlWrapper(getCurrentUser),
   logoutUser: ctrlWrapper(logoutUser),
   updateTheme: ctrlWrapper(updateTheme),
-  //   updateUserSubscription: ctrlWrapper(updateUserSubscription),
 };
