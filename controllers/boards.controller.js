@@ -1,4 +1,9 @@
-const { HttpError, ctrlWrapper } = require("../helpers");
+const {
+  HttpError,
+  ctrlWrapper,
+  isElementDuplicate,
+  isElementDuplicateUpdate,
+} = require("../helpers");
 const { Board } = require("../models/board.model");
 const { User } = require("../models/user.model");
 
@@ -57,8 +62,12 @@ const getOneBoard = async (req, res) => {
 };
 const postBoard = async (req, res) => {
   const { _id: user } = req.user;
+  const isBoardExist = await isElementDuplicate("boards", User, user, req);
+  if (isBoardExist) {
+    throw HttpError(409, `Board ${req.body.title} already exist`);
+  }
+
   const result = await Board.create({ ...req.body, user });
-  console.log(result);
   await User.findByIdAndUpdate(
     user._id,
     {
@@ -70,7 +79,18 @@ const postBoard = async (req, res) => {
   res.status(201).json({ _id, title, icon, background, updatedAt, columns });
 };
 const updateBoard = async (req, res) => {
+  const { _id: user } = req.user;
   const { id } = req.params;
+  const isBoardExist = await isElementDuplicateUpdate(
+    "boards",
+    User,
+    user,
+    req
+  );
+  console.log(isBoardExist);
+  if (isBoardExist) {
+    throw HttpError(409, `Board ${req.body.title} already exist`);
+  }
   const result = await Board.findByIdAndUpdate(id, req.body, { new: true });
   if (!result) {
     throw HttpError(404, `Not found`);
@@ -78,14 +98,7 @@ const updateBoard = async (req, res) => {
   const { _id, title, icon, background, updatedAt, columns } = result;
   res.status(200).json({ _id, title, icon, background, updatedAt, columns });
 };
-// const updateContactStatus = async (req, res) => {
-//   const { id } = req.params;
-//   const result = await Contact.findByIdAndUpdate(id, req.body, { new: true });
-//   if (!result) {
-//     throw HttpError(404, `Not found`);
-//   }
-//   res.status(200).json(result);
-// };
+
 const deleteBoard = async (req, res) => {
   const { _id: user } = req.user;
   const { id } = req.params;
