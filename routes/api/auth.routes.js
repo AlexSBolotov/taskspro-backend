@@ -28,11 +28,4 @@ router.patch(
   ctrl.updateTheme
 );
 
-// router.patch(
-//   '/',
-//   authenticate,
-//   validateBody(schemas.updateUserSubscription, 'missing field subscription'),
-//   ctrl.updateUserSubscription
-// );
-
 module.exports = router;

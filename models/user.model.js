@@ -49,15 +49,17 @@ const userSchema = new Schema(
 userSchema.post('save', handleMongooseError);
 
 const registerUserSchema = Joi.object({
-  name: Joi.string().required().messages({
+  name: Joi.string().min(1).max(32).pattern(passRegex).required().messages({
     'string.pattern.base': 'Name can only contain Latin letters, numbers',
+    'string.min': 'Name must be at least {#limit} characters long',
+    'string.max': 'Name must not exceed {#limit} characters',
     'any.required': 'Name is required',
   }),
   email: Joi.string().pattern(emailRegexp).required().messages({
     'string.pattern.base': 'Email must be a valid email address',
     'any.required': 'Email is required',
   }),
-  password: Joi.string().min(8).max(32).pattern(passRegex).required().messages({
+  password: Joi.string().min(8).max(64).pattern(passRegex).required().messages({
     'string.pattern.base': 'Password can only contain Latin letters, numbers',
     'string.min': 'Password must be at least {#limit} characters long',
     'string.max': 'Password must not exceed {#limit} characters',
@@ -85,17 +87,10 @@ const updateThemeSchema = Joi.object({
     }),
 });
 
-// const updateUserSubscription = Joi.object({
-//   subscription: Joi.string()
-//     .valid(...themeTypes)
-//     .required(),
-// });
-
 const schemas = {
   registerUserSchema,
   loginUserSchema,
   updateThemeSchema,
-  //   updateUserSubscription,
 };
 
 const User = model('user', userSchema);
