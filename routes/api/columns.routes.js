@@ -7,7 +7,7 @@ const { schemas } = require("../../models/column.model");
 router.post(
   "/",
   authenticate,
-  validateBody(schemas.addColumnSchema, `missing fields`),
+  validateBody(schemas.commonColumnSchema, `missing fields`),
   ctrl.postColumn
 );
 
@@ -15,7 +15,7 @@ router.patch(
   "/:id",
   authenticate,
   isValidId,
-  validateBody(schemas.updateColumnSchema, `missing fields`),
+  validateBody(schemas.commonColumnSchema, `missing fields`),
   ctrl.updateColumn
 );
 

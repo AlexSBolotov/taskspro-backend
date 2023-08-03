@@ -31,7 +31,7 @@ const columnSchema = new Schema(
 
 columnSchema.post("save", handleMongooseError);
 
-const addColumnSchema = Joi.object({
+const commonColumnSchema = Joi.object({
   title: Joi.string().required().messages({
     "any.required": "missing required title field",
   }),
@@ -39,15 +39,9 @@ const addColumnSchema = Joi.object({
     "any.required": "missing required board field",
   }),
 });
-const updateColumnSchema = Joi.object({
-  title: Joi.string().required().messages({
-    "any.required": "missing required title field",
-  }),
-});
 
 const schemas = {
-  addColumnSchema,
-  updateColumnSchema,
+  commonColumnSchema,
 };
 const Column = model("column", columnSchema);
 

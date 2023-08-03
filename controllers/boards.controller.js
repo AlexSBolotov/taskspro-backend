@@ -1,7 +1,7 @@
 const {
   HttpError,
   ctrlWrapper,
-  isElementDuplicate,
+  isElementDuplicateCreate,
   isElementDuplicateUpdate,
 } = require("../helpers");
 const { Board } = require("../models/board.model");
@@ -62,7 +62,12 @@ const getOneBoard = async (req, res) => {
 };
 const postBoard = async (req, res) => {
   const { _id: user } = req.user;
-  const isBoardExist = await isElementDuplicate("boards", User, user, req);
+  const isBoardExist = await isElementDuplicateCreate(
+    "boards",
+    User,
+    user,
+    req
+  );
   if (isBoardExist) {
     throw HttpError(409, `Board ${req.body.title} already exist`);
   }
