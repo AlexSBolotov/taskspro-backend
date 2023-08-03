@@ -1,10 +1,25 @@
-const { HttpError, ctrlWrapper } = require("../helpers");
+const {
+  HttpError,
+  ctrlWrapper,
+  isElementDuplicateCreate,
+  isElementDuplicateUpdate,
+} = require("../helpers");
 const { Column } = require("../models/column.model");
 const { Board } = require("../models/board.model");
 
 const postColumn = async (req, res) => {
   const { _id: user } = req.user;
-  const { board } = req.body;
+  const { board: boardId } = req.body;
+  const isColumnExist = await isElementDuplicateCreate(
+    "columns",
+    Board,
+    boardId,
+    req
+  );
+  if (isColumnExist) {
+    throw HttpError(409, `Column ${req.body.title} already exist`);
+  }
+
   const result = await Column.create({ ...req.body, user });
   await Board.findByIdAndUpdate(
     board,
@@ -13,18 +28,30 @@ const postColumn = async (req, res) => {
     },
     { new: true }
   );
-  const { _id, title, updatedAt, tasks } = result;
-  res.status(201).json({ _id, title, updatedAt, tasks });
+  const { _id, title, updatedAt, board, tasks } = result;
+  res.status(201).json({ _id, title, updatedAt, board, tasks });
 };
+
 const updateColumn = async (req, res) => {
   const { id } = req.params;
+  const { board: boardId } = req.body;
+  const isColumnExist = await isElementDuplicateUpdate(
+    "columns",
+    Board,
+    boardId,
+    req
+  );
+  if (isColumnExist) {
+    throw HttpError(409, `Column ${req.body.title} already exist`);
+  }
   const result = await Column.findByIdAndUpdate(id, req.body, { new: true });
   if (!result) {
     throw HttpError(404, `Not found`);
   }
-  const { _id, title, updatedAt, tasks } = result;
-  res.status(200).json({ _id, title, updatedAt, tasks });
+  const { _id, title, updatedAt, board, tasks } = result;
+  res.status(200).json({ _id, title, updatedAt, board, tasks });
 };
+
 const deleteColumn = async (req, res) => {
   const { id } = req.params;
   const result = await Column.findByIdAndDelete(id);
