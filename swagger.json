@@ -66,11 +66,76 @@
           },
           "400": {
             "description": "Bad request (missing field)",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse400"
+                }
+              }
+            }
           },
           "409": {
-            "description": "Email in use",
-            "content": {}
+            "description": "Conflict (user with stated email is already exist)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse409"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "tags": ["User"],
+        "summary": "User login",
+        "parameters": [],
+
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Login object",
+          "required": true,
+
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (missing field)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse400"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Unauthorized (login information is wrong)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse401"
+                }
+              }
+            }
           }
         }
       }
@@ -84,13 +149,14 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "User's name"
+            "description": "User's name",
+            "example": "User101"
           },
           "email": {
             "type": "string",
             "description": "User's email",
             "format": "email",
-            "example": "test@mail.com"
+            "example": "User101@mail.com"
           },
           "password": {
             "type": "string",
@@ -101,27 +167,213 @@
       },
       "RegistrationResponse": {
         "type": "object",
-        "items": {
-          "type": "object",
-          "properties": {
-            "email": {
-              "type": "string",
-              "description": "User's email",
-              "format": "email"
-            },
-            "userId": {
-              "type": "number",
-              "description": "User's id",
-              "example": "32143232436545474"
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "Accsess token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YzZjMWY3ZDg3NmQ3NWY1MTQzYThhMCIsImlhdCI6MTY5MTA2NTQwMCwiZXhwIjoxNjkxMTUxODAwfQ.-09Gio58q4KYVeElnDbStvayWiMUZlOS2HcW3QPqgBY"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "User's name",
+                "example": "User101"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email",
+                "example": "User101@mail.com"
+              },
+              "theme": {
+                "type": "string",
+                "description": "App theme",
+                "example": "dark"
+              },
+              "avatarURL": {
+                "type": "string",
+                "description": "User's avatar URL",
+                "example": "https://monosnap.com/file/p3erqwEE6b2qI2rjCSPXIMQPxconYV"
+              },
+              "boards": {
+                "type": "array",
+                "description": "Empty array of user's boards",
+                "example": []
+              }
             }
           }
         },
-        "example": [
-          { "email": "1@gmail.com", "userId": "1" },
-          { "email": "2@gmail.com", "userId": "2" }
-        ]
+        "example": {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YzZjMWY3ZDg3NmQ3NWY1MTQzYThhMCIsImlhdCI6MTY5MTA2NTQwMCwiZXhwIjoxNjkxMTUxODAwfQ.-09Gio58q4KYVeElnDbStvayWiMUZlOS2HcW3QPqgBY",
+          "user": {
+            "name": "User101",
+            "email": "User101@mail.com",
+            "theme": "dark",
+            "avatarURL": "",
+            "boards": []
+          }
+        }
+      },
+      "RegistrationResponse400": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message of required field",
+            "example": "Name is required"
+          }
+        },
+        "example": {
+          "message": "Name is required"
+        }
+      },
+      "RegistrationResponse409": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message of existing user",
+            "example": "Email in use"
+          }
+        },
+        "example": {
+          "message": "Email in use"
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email",
+            "example": "User101@mail.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "Accsess token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YzZjMWY3ZDg3NmQ3NWY1MTQzYThhMCIsImlhdCI6MTY5MTA2NTQwMCwiZXhwIjoxNjkxMTUxODAwfQ.-09Gio58q4KYVeElnDbStvayWiMUZlOS2HcW3QPqgBY"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "User's name",
+                "example": "User101"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email",
+                "example": "User101@mail.com"
+              },
+              "theme": {
+                "type": "string",
+                "description": "App theme",
+                "example": "dark"
+              },
+              "avatarURL": {
+                "type": "string",
+                "description": "User's avatar URL",
+                "example": "https://monosnap.com/file/p3erqwEE6b2qI2rjCSPXIMQPxconYV"
+              },
+              "boards": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "description": "Board`s id",
+                      "example": "64c772d4906c009cfba4f8a9"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "Board`s title",
+                      "example": "User101@mail.com"
+                    },
+                    "icon": {
+                      "type": "string",
+                      "description": "Board`s icon",
+                      "example": "icon-star"
+                    },
+                    "background": {
+                      "type": "string",
+                      "description": "Board`s background",
+                      "example": "10"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "description": "Board`s last update",
+                      "example": "2023-08-03T11:32:36.216Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YzZjMWY3ZDg3NmQ3NWY1MTQzYThhMCIsImlhdCI6MTY5MTA2NTQwMCwiZXhwIjoxNjkxMTUxODAwfQ.-09Gio58q4KYVeElnDbStvayWiMUZlOS2HcW3QPqgBY",
+          "user": {
+            "name": "User101",
+            "email": "User101@mail.com",
+            "theme": "dark",
+            "avatarURL": "",
+            "boards": [
+              {
+                "_id": "64c772d4906c009cfba4f8a9",
+                "title": "Demo",
+                "icon": "icon-star",
+                "background": "10",
+                "updatedAt": "2023-08-03T11:32:36.216Z"
+              }
+            ]
+          }
+        }
+      },
+      "LoginResponse400": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message of required field",
+            "example": "You must enter a email"
+          }
+        },
+        "example": {
+          "message": "You must enter a email"
+        }
+      },
+      "LoginResponse401": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message of wrong login information",
+            "example": "Email or password is wrong"
+          }
+        },
+        "example": {
+          "message": "Email or password is wrong"
+        }
       }
     },
+
     "securitySchemes": {
       "Bearer": {
         "type": "http",
