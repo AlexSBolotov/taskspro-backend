@@ -22,7 +22,7 @@ const postColumn = async (req, res) => {
 
   const result = await Column.create({ ...req.body, user });
   await Board.findByIdAndUpdate(
-    board,
+    boardId,
     {
       $push: { columns: result._id },
     },

@@ -29,10 +29,6 @@ const taskSchema = new Schema(
       ref: "user",
       required: true,
     },
-    // board: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: "board",
-    // },
     column: {
       type: Schema.Types.ObjectId,
       ref: "column",
