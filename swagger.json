@@ -72,6 +72,16 @@
               }
             }
           },
+          "404": {
+            "description": "Not Found (requested resource could not be found)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response404"
+                }
+              }
+            }
+          },
           "409": {
             "description": "Conflict (user with stated email is already exist)",
             "content": {
@@ -132,6 +142,16 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found (requested resource could not be found)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response404"
+                }
+              }
+            }
           }
         }
       }
@@ -186,12 +206,233 @@
               }
             }
           },
+          "404": {
+            "description": "Not Found (requested resource could not be found)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response404"
+                }
+              }
+            }
+          },
           "409": {
             "description": "Conflict (board already exist)",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AddBoardResponse409"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/boards/{id}": {
+      "get": {
+        "tags": ["Boards"],
+        "summary": "Get board's info by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Board`s id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBoardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid board`s id)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBoardResponse400"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found (requested resource could not be found)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response404"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict (board already exist)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddBoardResponse409"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Boards"],
+        "summary": "Edit board's info by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Board`s id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Board object",
+          "required": true,
+
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditBoardRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EditBoardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid board`s id/ missing required field)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBoardResponse400"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found (requested resource could not be found)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response404"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict (board already exist)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddBoardResponse409"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Boards"],
+        "summary": "Delete board by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Board`s id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteBoardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid board`s id)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBoardResponse400"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found (requested resource could not be found)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response404"
                 }
               }
             }
@@ -213,6 +454,19 @@
         },
         "example": {
           "message": "Not authorized"
+        }
+      },
+      "Response404": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The requested resource could not be found",
+            "example": "Not Found"
+          }
+        },
+        "example": {
+          "message": "Not Found"
         }
       },
       "RegistrationRequest": {
@@ -376,7 +630,7 @@
                     "title": {
                       "type": "string",
                       "description": "Board`s title",
-                      "example": "User101@mail.com"
+                      "example": "Board01"
                     },
                     "icon": {
                       "type": "string",
@@ -409,7 +663,7 @@
             "boards": [
               {
                 "_id": "64c772d4906c009cfba4f8a9",
-                "title": "Demo",
+                "title": "Board01",
                 "icon": "icon-star",
                 "background": "10",
                 "updatedAt": "2023-08-03T11:32:36.216Z"
@@ -467,7 +721,75 @@
       },
       "AddBoardResponse": {
         "type": "object",
-        "required": ["title"],
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Board's id",
+            "example": "64cc1ecaa11d08d1a3498322"
+          },
+          "title": {
+            "type": "string",
+            "description": "Board's title",
+            "example": "Board01"
+          },
+          "icon": {
+            "type": "string",
+            "description": "Board's icon",
+            "example": "icon-star"
+          },
+          "background": {
+            "type": "string",
+            "description": "Board's background",
+            "example": "00"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Board's last update date",
+            "example": "2023-08-03T21:40:26.681Z"
+          },
+          "columns": {
+            "type": "array",
+            "description": "Empty array of board`s columns",
+            "example": []
+          }
+        },
+        "example": {
+          "_id": "64c772d4906c009cfba4f8a9",
+          "title": "Board01",
+          "icon": "icon-star",
+          "background": "10",
+          "updatedAt": "2023-08-03T11:32:36.216Z",
+          "columns": []
+        }
+      },
+      "AddBoardResponse400": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Bad request (missing required title field)",
+            "example": "missing required title field"
+          }
+        },
+        "example": {
+          "message": "missing required title field"
+        }
+      },
+      "AddBoardResponse409": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Conflict (board with stated title is already exist)",
+            "example": "Board Board01 already exist"
+          }
+        },
+        "example": {
+          "message": "Board Board01 already exist"
+        }
+      },
+      "GetBoardResponse": {
+        "type": "object",
         "properties": {
           "_id": {
             "type": "string",
@@ -496,35 +818,168 @@
           },
           "columns": {
             "type": "array",
-            "description": "Empty array of board`s columns",
-            "example": []
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "Column's`s id",
+                  "example": "64c772d4906c009cfba4f8a9"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Column`s title",
+                  "example": "Column01"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "description": "Column`s last update",
+                  "example": "2023-08-03T11:32:36.216Z"
+                },
+                "tasks": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "description": "Task's`s id",
+                        "example": "64c772d4906c009cfba4f8a9"
+                      },
+                      "title": {
+                        "type": "string",
+                        "description": "Task`s title",
+                        "example": "Task01"
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "Task`s description",
+                        "example": "Task01 description"
+                      },
+                      "priority": {
+                        "type": "string",
+                        "description": "Task`s priority",
+                        "example": "Low"
+                      },
+                      "deadline": {
+                        "type": "string",
+                        "description": "Task`s deadline",
+                        "example": "2023-07-31T13:32:01.041Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "description": "Task`s last update",
+                        "example": "2023-08-03T11:32:36.216Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
+        },
+        "example": {
+          "_id": "64c772d4906c009cfba4f8a9",
+          "title": "Board01",
+          "icon": "icon-star",
+          "background": "10",
+          "updatedAt": "2023-08-03T11:32:36.216Z",
+          "columns": [
+            {
+              "_id": "64c7a72cef9d0ebaa3b7b7b9",
+              "title": "Column01",
+              "updatedAt": "2023-08-01T10:39:02.011Z",
+              "tasks": [
+                {
+                  "_id": "64c7b7d17e966dce4df1fc6c",
+                  "title": "Task01",
+                  "description": "Task01 description",
+                  "priority": "Low",
+                  "deadline": "2023-07-31T13:32:01.041Z",
+                  "updatedAt": "2023-07-31T13:32:01.042Z"
+                }
+              ]
+            }
+          ]
         }
       },
-      "AddBoardResponse400": {
+      "GetBoardResponse400": {
         "type": "object",
         "properties": {
           "message": {
             "type": "string",
-            "description": "Bad request (missing required title field)",
-            "example": "missing required title field"
+            "description": "Bad request (invalid board`s id)",
+            "example": "64c772d4906c009fba4f8a9 is not valid id"
           }
         },
         "example": {
-          "message": "missing required title field"
+          "message": "64c772d4906c009fba4f8a9 is not valid id"
         }
       },
-      "AddBoardResponse409": {
+      "EditBoardRequest": {
+        "type": "object",
+        "required": ["title", "icon", "background"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Board's title",
+            "example": "Board01"
+          },
+          "icon": {
+            "type": "string",
+            "description": "Board's icon",
+            "example": "icon-project"
+          },
+          "background": {
+            "type": "string",
+            "description": "Board's background",
+            "example": "00"
+          }
+        }
+      },
+      "EditBoardResponse": {
         "type": "object",
         "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Board's id",
+            "example": "64cc1ecaa11d08d1a3498322"
+          },
+          "title": {
+            "type": "string",
+            "description": "Board's title",
+            "example": "Board01"
+          },
+          "icon": {
+            "type": "string",
+            "description": "Board's icon",
+            "example": "icon-project"
+          },
+          "background": {
+            "type": "string",
+            "description": "Board's background",
+            "example": "00"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Board's last update date",
+            "example": "2023-08-03T21:40:26.681Z"
+          }
+        }
+      },
+      "DeleteBoardResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Board's id",
+            "example": "64cc1ecaa11d08d1a3498322"
+          },
           "message": {
             "type": "string",
-            "description": "Conflict (board with stated title is already exist)",
-            "example": "Board Board01 already exist"
+            "description": "Successful operation's message",
+            "example": "Board deleted"
           }
-        },
-        "example": {
-          "message": "Board Board01 already exist"
         }
       }
     },

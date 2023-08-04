@@ -23,7 +23,7 @@ router.post(
 //   ctrl.updateContactStatus
 // );
 
-router.put(
+router.patch(
   "/:id",
   authenticate,
   isValidId,

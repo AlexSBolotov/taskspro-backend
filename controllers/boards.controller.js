@@ -100,8 +100,8 @@ const updateBoard = async (req, res) => {
   if (!result) {
     throw HttpError(404, `Not found`);
   }
-  const { _id, title, icon, background, updatedAt, columns } = result;
-  res.status(200).json({ _id, title, icon, background, updatedAt, columns });
+  const { _id, title, icon, background, updatedAt } = result;
+  res.status(200).json({ _id, title, icon, background, updatedAt });
 };
 
 const deleteBoard = async (req, res) => {
