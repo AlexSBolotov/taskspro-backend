@@ -10,6 +10,7 @@ const boardsRouter = require("./routes/api/boards.routes");
 const columnsRouter = require("./routes/api/columns.routes");
 const tasksRouter = require("./routes/api/tasks.routes");
 const usersRouter = require("./routes/api/auth.routes");
+const helpRouter = require("./routes/api/help.routes");
 
 const app = express();
 
@@ -25,6 +26,8 @@ app.use("/api/boards", boardsRouter);
 app.use("/api/columns", columnsRouter);
 app.use("/api/tasks", tasksRouter);
 app.use("/users", usersRouter);
+app.use("/api/help", helpRouter);
+
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
 });
