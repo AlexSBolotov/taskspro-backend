@@ -191,7 +191,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AddBoardResponse400"
+                  "$ref": "#/components/schemas/AddResponse400"
                 }
               }
             }
@@ -262,7 +262,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetBoardResponse400"
+                  "$ref": "#/components/schemas/GetPatchDeleteResponse400"
                 }
               }
             }
@@ -343,7 +343,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetBoardResponse400"
+                  "$ref": "#/components/schemas/GetPatchDeleteResponse400"
                 }
               }
             }
@@ -412,7 +412,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetBoardResponse400"
+                  "$ref": "#/components/schemas/GetPatchDeleteResponse400"
                 }
               }
             }
@@ -433,6 +433,515 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Response404"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/columns": {
+      "post": {
+        "tags": ["Columns"],
+        "summary": "Add column",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Column object",
+          "required": true,
+
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddColumnRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddColumnResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (missing required field)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddResponse400"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found (requested resource could not be found)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response404"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict (board already exist)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddColumnResponse409"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error (invalid board's id)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddColumnResponse500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/columns/{id}": {
+      "patch": {
+        "tags": ["Columns"],
+        "summary": "Edit column's info by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Column`s id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Column object",
+          "required": true,
+
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditColumnRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EditColumnResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid column`s id/ missing required field)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPatchDeleteResponse400"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found (requested resource could not be found)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response404"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict (column with stated title is already exist)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddColumnResponse409"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error (invalid board's id)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddColumnResponse500"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Columns"],
+        "summary": "Delete column by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Columns`s id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteColumnResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid columns`s id)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPatchDeleteResponse400"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found (requested resource could not be found)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response404"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tasks": {
+      "post": {
+        "tags": ["Tasks"],
+        "summary": "Add task",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Task object",
+          "required": true,
+
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddTaskRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddTaskResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (missing required field/ invalid column's id)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddResponse400"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found (requested resource could not be found)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response404"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tasks/{id}": {
+      "patch": {
+        "tags": ["Tasks"],
+        "summary": "Edit task's info by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Task`s id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Task object",
+          "required": true,
+
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditTaskRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EditTaskResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid task`s id/ missing required field)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPatchDeleteResponse400"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found (requested resource could not be found)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response404"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Tasks"],
+        "summary": "Delete task by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Task`s id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteTaskResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid task`s id)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPatchDeleteResponse400"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found (requested resource could not be found)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response404"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tasks/{id}/replace": {
+      "patch": {
+        "tags": ["Tasks"],
+        "summary": "Replace task to another column by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Task`s id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Task object",
+          "required": true,
+
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReplaceTaskRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReplaceTaskResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid task`s id/ missing required field)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPatchDeleteResponse400"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found (requested resource could not be found)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error (invalid column's id)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReplaceTaskResponse500"
                 }
               }
             }
@@ -762,17 +1271,17 @@
           "columns": []
         }
       },
-      "AddBoardResponse400": {
+      "AddResponse400": {
         "type": "object",
         "properties": {
           "message": {
             "type": "string",
             "description": "Bad request (missing required title field)",
-            "example": "missing required title field"
+            "example": "missing required \"field_name\" field"
           }
         },
         "example": {
-          "message": "missing required title field"
+          "message": "missing required \"field_name\" field"
         }
       },
       "AddBoardResponse409": {
@@ -903,7 +1412,7 @@
           ]
         }
       },
-      "GetBoardResponse400": {
+      "GetPatchDeleteResponse400": {
         "type": "object",
         "properties": {
           "message": {
@@ -923,7 +1432,7 @@
           "title": {
             "type": "string",
             "description": "Board's title",
-            "example": "Board01"
+            "example": "Board02"
           },
           "icon": {
             "type": "string",
@@ -948,7 +1457,7 @@
           "title": {
             "type": "string",
             "description": "Board's title",
-            "example": "Board01"
+            "example": "Board02"
           },
           "icon": {
             "type": "string",
@@ -965,6 +1474,13 @@
             "description": "Board's last update date",
             "example": "2023-08-03T21:40:26.681Z"
           }
+        },
+        "example": {
+          "_id": "64c772d4906c009cfba4f8a9",
+          "title": "Board02",
+          "icon": "icon-project",
+          "background": "10",
+          "updatedAt": "2023-08-03T11:32:36.216Z"
         }
       },
       "DeleteBoardResponse": {
@@ -980,6 +1496,336 @@
             "description": "Successful operation's message",
             "example": "Board deleted"
           }
+        }
+      },
+      "AddColumnRequest": {
+        "type": "object",
+        "required": ["board", "title"],
+        "properties": {
+          "board": {
+            "type": "string",
+            "description": "Board's id",
+            "example": "64c772d4906c009cfba4f8a9"
+          },
+          "title": {
+            "type": "string",
+            "description": "Column's title",
+            "example": "Column01"
+          }
+        }
+      },
+      "AddColunmResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Column's id",
+            "example": "64cb9cb06d0b074081d5fa91"
+          },
+          "title": {
+            "type": "string",
+            "description": "Column's title",
+            "example": "Column01"
+          },
+          "board": {
+            "type": "string",
+            "description": "Board's id",
+            "example": "64c772d4906c009cfba4f8a9"
+          },
+
+          "updatedAt": {
+            "type": "string",
+            "description": "Column's last update date",
+            "example": "2023-08-03T21:40:26.681Z"
+          },
+          "tasks": {
+            "type": "array",
+            "description": "Empty array of column`s tasks",
+            "example": []
+          }
+        },
+        "example": {
+          "_id": "64c772d4906c009cfba4f8a9",
+          "title": "Column01",
+          "updatedAt": "2023-08-03T11:32:36.216Z",
+          "board": "64c772d4906c009cfba4f8a9",
+          "tasks": []
+        }
+      },
+      "AddColumnResponse409": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Conflict (column with stated title is already exist)",
+            "example": "Column Column01 already exist"
+          }
+        },
+        "example": {
+          "message": "Column Column01 already exist"
+        }
+      },
+      "AddColumnResponse500": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Internal Server Error (invalid board's id)",
+            "example": "Cast to ObjectId failed for value \"64c772d4906c09cfba4f8a9\" (type string) at path \"_id\" for model \"board\""
+          }
+        },
+        "example": {
+          "message": "Cast to ObjectId failed for value \"64c772d4906c09cfba4f8a9\" (type string) at path \"_id\" for model \"board\""
+        }
+      },
+      "EditColumnRequest": {
+        "type": "object",
+        "required": ["board", "title"],
+        "properties": {
+          "board": {
+            "type": "string",
+            "description": "Board's id",
+            "example": "64c772d4906c009cfba4f8a9"
+          },
+          "title": {
+            "type": "string",
+            "description": "Column's title",
+            "example": "Column02"
+          }
+        }
+      },
+      "EditColumnResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Column's id",
+            "example": "64cc1ecaa11d08d1a3498322"
+          },
+          "title": {
+            "type": "string",
+            "description": "Column's title",
+            "example": "Column02"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Column's last update date",
+            "example": "2023-08-03T21:40:26.681Z"
+          },
+          "board": {
+            "type": "string",
+            "description": "Board's id",
+            "example": "64c772d4906c009cfba4f8a9"
+          }
+        },
+        "example": {
+          "_id": "64c772d4906c009cfba4f8a9",
+          "title": "Column02",
+          "updatedAt": "2023-08-03T11:32:36.216Z",
+          "board": "64c772d4906c009cfba4f8a9"
+        }
+      },
+      "DeleteColumnResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Column's id",
+            "example": "64cc1ecaa11d08d1a3498322"
+          },
+          "message": {
+            "type": "string",
+            "description": "Successful operation's message",
+            "example": "Column deleted"
+          }
+        },
+        "example": {
+          "_id": "64c8e005a6e42b970c671aa7",
+          "message": "Column deleted"
+        }
+      },
+      "AddTaskRequest": {
+        "type": "object",
+        "required": ["column", "title"],
+        "properties": {
+          "column": {
+            "type": "string",
+            "description": "Column's id",
+            "example": "64c772d4906c009cfba4f8a9"
+          },
+          "title": {
+            "type": "string",
+            "description": "Tasks's title",
+            "example": "Tasks01"
+          }
+        }
+      },
+      "AddTaskResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Tasks's id",
+            "example": "64cb9cb06d0b074081d5fa91"
+          },
+          "title": {
+            "type": "string",
+            "description": "Tasks's title",
+            "example": "Tasks01"
+          },
+          "description": {
+            "type": "string",
+            "description": "Tasks's description",
+            "example": "Tasks01 description"
+          },
+          "priority": {
+            "type": "string",
+            "description": "Tasks's priority",
+            "example": "Low"
+          },
+          "deadline": {
+            "type": "string",
+            "description": "Tasks's deadline",
+            "example": "2023-08-03T21:40:26.681Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Tasks's last update date",
+            "example": "2023-08-03T21:40:26.681Z"
+          }
+        },
+        "example": {
+          "_id": "64c8e005a6e42b970c671aa7",
+          "title": "Task01",
+          "description": "Task01 description",
+          "priority": "Low",
+          "deadline": "2023-08-01T10:35:49.188Z",
+          "updatedAt": "2023-08-01T10:35:49.195Z"
+        }
+      },
+      "EditTaskRequest": {
+        "type": "object",
+        "required": ["title", "description", "priority", "deadline"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Tasks's title",
+            "example": "Tasks02"
+          },
+          "description": {
+            "type": "string",
+            "description": "Tasks's description",
+            "example": "Tasks02 description"
+          },
+          "priority": {
+            "type": "string",
+            "description": "Tasks's priority",
+            "example": "Medium"
+          },
+          "deadline": {
+            "type": "string",
+            "description": "Tasks's deadline",
+            "example": "2023-08-03T21:40:26.681Z"
+          }
+        }
+      },
+      "EditTaskResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Tasks's id",
+            "example": "64cb9cb06d0b074081d5fa91"
+          },
+          "title": {
+            "type": "string",
+            "description": "Tasks's title",
+            "example": "Tasks02"
+          },
+          "description": {
+            "type": "string",
+            "description": "Tasks's description",
+            "example": "Tasks02 description"
+          },
+          "priority": {
+            "type": "string",
+            "description": "Tasks's priority",
+            "example": "Medium"
+          },
+          "deadline": {
+            "type": "string",
+            "description": "Tasks's deadline",
+            "example": "2023-08-03T21:40:26.681Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Tasks's last update date",
+            "example": "2023-08-03T21:40:26.681Z"
+          }
+        },
+        "example": {
+          "_id": "64c8e005a6e42b970c671aa7",
+          "title": "Task02",
+          "description": "Task02 description",
+          "priority": "Medium",
+          "deadline": "2023-08-01T10:35:49.188Z",
+          "updatedAt": "2023-08-01T10:35:49.195Z"
+        }
+      },
+      "DeleteTaskResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Task`s id",
+            "example": "64cc1ecaa11d08d1a3498322"
+          },
+          "message": {
+            "type": "string",
+            "description": "Successful operation's message",
+            "example": "Task deleted"
+          }
+        },
+        "example": {
+          "_id": "64c8e005a6e42b970c671aa7",
+          "message": "Task deleted"
+        }
+      },
+      "ReplaceTaskRequest": {
+        "type": "object",
+        "required": ["column"],
+        "properties": {
+          "column": {
+            "type": "string",
+            "description": "Column's id",
+            "example": "64c772d4906c009cfba4f8a9"
+          }
+        }
+      },
+      "ReplaceTaskResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Successful operation's message",
+            "example": "Task replaced"
+          }
+        },
+        "example": {
+          "message": "Task replaced"
+        }
+      },
+      "ReplaceTaskResponse500": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Internal Server Error (invalid column's id)",
+            "example": "Cast to ObjectId failed for value \"64c92c1979888f7897f38c0\" (type string) at path \"column\""
+          }
+        },
+        "example": {
+          "message": "Cast to ObjectId failed for value \"64c92c1979888f7897f38c0\" (type string) at path \"column\""
         }
       }
     },

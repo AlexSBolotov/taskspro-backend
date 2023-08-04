@@ -70,7 +70,7 @@ const deleteTask = async (req, res) => {
     },
     { new: true }
   );
-  res.status(200).json({ id, message: "Task deleted" });
+  res.status(200).json({ _id: id, message: "Task deleted" });
 };
 
 module.exports = {

@@ -48,8 +48,8 @@ const updateColumn = async (req, res) => {
   if (!result) {
     throw HttpError(404, `Not found`);
   }
-  const { _id, title, updatedAt, board, tasks } = result;
-  res.status(200).json({ _id, title, updatedAt, board, tasks });
+  const { _id, title, updatedAt, board } = result;
+  res.status(200).json({ _id, title, updatedAt, board });
 };
 
 const deleteColumn = async (req, res) => {
