@@ -14,15 +14,29 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  folder: 'TaskPro-avatars',
-  allowedFormats: ['jpg', 'png'],
-  filename: (req, file, cb) => {
-    const fileName = `avatar_${req.user.userId}`;
-    cb(null, fileName);
+
+  params: async (req, file) => {
+    let folder;
+    if (file.fieldname === 'avatar') {
+      folder = 'avatars';
+    }
+    return {
+      folder: folder,
+      allowed_formats: ['jpg', 'png'],
+      public_id: file.originalname,
+      transformation: [{ width: 68, height: 68, crop: 'scale' }],
+    };
   },
-  transformation: [{ width: 68, height: 68, crop: 'scale' }],
 });
 
 const upload = multer({ storage });
 
 module.exports = upload;
+
+// folder: 'TaskPro-avatars',
+//   allowedFormats: ['jpg', 'png'],
+//   filename: (req, file, cb) => {
+//     const fileName = `avatar_${req.user.userId}`;
+//     cb(null, fileName);
+//   },
+//   transformation: [{ width: 68, height: 68, crop: 'scale' }],
