@@ -17,30 +17,28 @@
   ],
   "tags": [
     {
-      "name": "User",
+      "name": "Users",
       "description": "Authorization/User endpoints"
     },
     {
-      "name": "Board",
-      "description": "Board endpoints"
+      "name": "Boards",
+      "description": "Boards endpoints"
     },
     {
-      "name": "Column",
-      "description": "Column endpoints"
+      "name": "Columns",
+      "description": "Columns endpoints"
     },
     {
-      "name": "Task",
-      "description": "Task endpoints"
+      "name": "Tasks",
+      "description": "Tasks endpoints"
     }
   ],
   "paths": {
-    "/user/register": {
+    "/users/register": {
       "post": {
-        "tags": ["User"],
+        "tags": ["Users"],
         "summary": "User registration",
         "parameters": [],
-
-        "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Registration's object",
           "required": true,
@@ -54,7 +52,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "Successful operation",
             "content": {
               "application/json": {
@@ -87,13 +85,11 @@
         }
       }
     },
-    "/user/login": {
+    "/users/login": {
       "post": {
-        "tags": ["User"],
+        "tags": ["Users"],
         "summary": "User login",
         "parameters": [],
-
-        "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Login object",
           "required": true,
@@ -107,7 +103,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "Successful operation",
             "content": {
               "application/json": {
@@ -127,7 +123,7 @@
               }
             }
           },
-          "409": {
+          "401": {
             "description": "Unauthorized (login information is wrong)",
             "content": {
               "application/json": {
@@ -139,10 +135,86 @@
           }
         }
       }
+    },
+    "/api/boards": {
+      "post": {
+        "tags": ["Boards"],
+        "summary": "Add board",
+        "parameters": [],
+
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Board object",
+          "required": true,
+
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddBoardRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddBoardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (missing required field)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddBoardResponse400"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response401"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict (board already exist)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddBoardResponse409"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "Response401": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Unauthorized",
+            "example": "Not authorized"
+          }
+        },
+        "example": {
+          "message": "Not authorized"
+        }
+      },
       "RegistrationRequest": {
         "type": "object",
         "required": ["name", "email", "password"],
@@ -221,7 +293,7 @@
         "properties": {
           "message": {
             "type": "string",
-            "description": "Error message of required field",
+            "description": "Bad request (missing required field)",
             "example": "Name is required"
           }
         },
@@ -234,7 +306,7 @@
         "properties": {
           "message": {
             "type": "string",
-            "description": "Error message of existing user",
+            "description": "Conflict (user with stated email is already exist)",
             "example": "Email in use"
           }
         },
@@ -351,12 +423,12 @@
         "properties": {
           "message": {
             "type": "string",
-            "description": "Error message of required field",
-            "example": "You must enter a email"
+            "description": "Bad request (missing required field)",
+            "example": "You must enter an email"
           }
         },
         "example": {
-          "message": "You must enter a email"
+          "message": "You must enter an email"
         }
       },
       "LoginResponse401": {
@@ -364,12 +436,95 @@
         "properties": {
           "message": {
             "type": "string",
-            "description": "Error message of wrong login information",
+            "description": "Unauthorized ( login information is wrong)",
             "example": "Email or password is wrong"
           }
         },
         "example": {
           "message": "Email or password is wrong"
+        }
+      },
+      "AddBoardRequest": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Board's title",
+            "example": "Board01"
+          },
+          "icon": {
+            "type": "string",
+            "description": "Board's icon",
+            "example": "icon-project"
+          },
+          "background": {
+            "type": "string",
+            "description": "Board's background",
+            "example": "00"
+          }
+        }
+      },
+      "AddBoardResponse": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Board's id",
+            "example": "64cc1ecaa11d08d1a3498322"
+          },
+          "title": {
+            "type": "string",
+            "description": "Board's title",
+            "example": "Board01"
+          },
+          "icon": {
+            "type": "string",
+            "description": "Board's icon",
+            "example": "icon-project"
+          },
+          "background": {
+            "type": "string",
+            "description": "Board's background",
+            "example": "00"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Board's last update date",
+            "example": "2023-08-03T21:40:26.681Z"
+          },
+          "columns": {
+            "type": "array",
+            "description": "Empty array of board`s columns",
+            "example": []
+          }
+        }
+      },
+      "AddBoardResponse400": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Bad request (missing required title field)",
+            "example": "missing required title field"
+          }
+        },
+        "example": {
+          "message": "missing required title field"
+        }
+      },
+      "AddBoardResponse409": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Conflict (board with stated title is already exist)",
+            "example": "Board Board01 already exist"
+          }
+        },
+        "example": {
+          "message": "Board Board01 already exist"
         }
       }
     },
