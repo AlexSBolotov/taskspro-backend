@@ -49,7 +49,7 @@ const userSchema = new Schema(
 userSchema.post('save', handleMongooseError);
 
 const registerUserSchema = Joi.object({
-  name: Joi.string().min(1).max(32).pattern(passRegex).required().messages({
+  name: Joi.string().min(1).max(32).required().messages({
     'string.pattern.base': 'Name can only contain Latin letters, numbers',
     'string.min': 'Name must be at least {#limit} characters long',
     'string.max': 'Name must not exceed {#limit} characters',
@@ -88,7 +88,7 @@ const updateThemeSchema = Joi.object({
 });
 
 const updateProfileSchema = Joi.object({
-  name: Joi.string().min(1).max(32).pattern(passRegex).required().messages({
+  name: Joi.string().min(1).max(32).required().messages({
     'string.pattern.base': 'Name can only contain Latin letters, numbers',
     'string.min': 'Name must be at least {#limit} characters long',
     'string.max': 'Name must not exceed {#limit} characters',
