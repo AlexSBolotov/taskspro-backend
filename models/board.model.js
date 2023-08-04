@@ -99,13 +99,3 @@ module.exports = {
   Board,
   schemas,
 };
-
-// "parameters": [
-//   {
-//     "in": "path",
-//     "name": "id",
-//     "required": true,
-//     "type": "string",
-//     "description": "Board's id"
-//   }
-// ],
