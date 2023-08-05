@@ -104,7 +104,7 @@ const updateProfileSchema = Joi.object({
     "string.max": "Password must not exceed {#limit} characters",
   }),
   theme: Joi.string(),
-  avatarURL: Joi.string(),
+  avatar: Joi.binary(),
 });
 
 const schemas = {
