@@ -1,8 +1,8 @@
-const { HttpError, ctrlWrapper } = require('../helpers');
-const { User } = require('../models/user.model');
-const bcryptjs = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+const { HttpError, ctrlWrapper } = require("../helpers");
+const { User } = require("../models/user.model");
+const bcryptjs = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const { SECRET_KEY } = process.env;
 
@@ -11,14 +11,14 @@ const registerUser = async (req, res) => {
 
   const user = await User.findOne({ email });
   if (user) {
-    throw HttpError(409, 'Email in use');
+    throw HttpError(409, "Email in use");
   }
   const hashPassword = await bcryptjs.hash(password, 10);
   const newUser = await User.create({
     ...req.body,
     password: hashPassword,
-    theme: 'dark',
-    avatarURL: '',
+    theme: "dark",
+    avatarURL: "",
     boards: [],
   });
 
@@ -26,10 +26,10 @@ const registerUser = async (req, res) => {
 
   const payload = { id };
 
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1d' });
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1d" });
 
   await User.findByIdAndUpdate(id, { token }, { new: true })
-    .populate('boards', {
+    .populate("boards", {
       _id: 1,
       title: 1,
       icon: 1,
@@ -54,16 +54,16 @@ const loginUser = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
-    throw HttpError(401, 'Email or password is wrong');
+    throw HttpError(401, "Email or password is wrong");
   }
   const comparePassword = await bcryptjs.compare(password, user.password);
   if (!comparePassword) {
-    throw HttpError(401, 'Email or password is wrong');
+    throw HttpError(401, "Email or password is wrong");
   }
   const payload = { id: user._id };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '24h' });
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
   await User.findByIdAndUpdate(user._id, { token }, { new: true })
-    .populate('boards', {
+    .populate("boards", {
       _id: 1,
       title: 1,
       icon: 1,
@@ -85,21 +85,33 @@ const loginUser = async (req, res) => {
 };
 
 const getCurrentUser = async (req, res) => {
-  const { email, name, theme, avatarURL, boards } = req.user;
-  res.status(200).json({
-    name,
-    email,
-    theme,
-    avatarURL,
-    boards,
-  });
+  const { _id, name, email, theme, avatarURL, boards } = req.user;
+  await User.findById(_id, { new: true })
+    .populate("boards", {
+      _id: 1,
+      title: 1,
+      icon: 1,
+      background: 1,
+      updatedAt: 1,
+    })
+    .then((user) => {
+      res.json({
+        user: {
+          name,
+          email,
+          theme,
+          avatarURL,
+          boards: user.boards,
+        },
+      });
+    });
 };
 
 const logoutUser = async (req, res) => {
   const { _id } = req.user;
-  await User.findByIdAndUpdate(_id, { token: '' });
+  await User.findByIdAndUpdate(_id, { token: "" });
   res.status(204).json({
-    message: 'Logout success',
+    message: "Logout success",
   });
 };
 
@@ -112,7 +124,7 @@ const updateTheme = async (req, res) => {
 
   res.json({
     theme,
-    message: `The theme has been changed. Now it's a ${req.body} theme `,
+    message: `The theme has been changed.`,
   });
 };
 
@@ -121,8 +133,7 @@ const updateProfileUser = async (req, res) => {
   const { email: newEmail, name: newName, password: newPassword } = req.body;
 
   const isEmailInUse = await User.findOne({ email: newEmail });
-  if (email !== newEmail && isEmailInUse)
-    throw HttpError(409, 'Please, choose another email');
+  if (email !== newEmail && isEmailInUse) throw HttpError(409, "Email in use");
 
   const userNewData = {
     email: newEmail,
