@@ -238,7 +238,7 @@
           "required": true,
 
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "$ref": "#/components/schemas/UpdateUserRequest"
               }
@@ -1436,11 +1436,10 @@
             "description": "App theme",
             "example": "dark"
           },
-          "avatarURL": {
+          "avatar": {
             "type": "string",
             "description": "User's avatar URL",
-            "format": "binary",
-            "example": "https://res.cloudinary.com/doepexhxk/image/upload/v1691154725/avatars/ua-flag.png.png"
+            "format": "binary"
           }
         }
       },
