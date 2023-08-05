@@ -1,8 +1,8 @@
-const cloudinary = require('cloudinary').v2;
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const multer = require('multer');
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const multer = require("multer");
 
-require('dotenv').config();
+require("dotenv").config();
 
 const { CLOUDINARY_NAME, CLOUDINARY_API_KEY, CLOUDINARY_SECRET } = process.env;
 
@@ -17,14 +17,14 @@ const storage = new CloudinaryStorage({
 
   params: async (req, file) => {
     let folder;
-    if (file.fieldname === 'avatar') {
-      folder = 'avatars';
+    if (file.fieldname === "avatar") {
+      folder = "avatars";
     }
     return {
       folder: folder,
-      allowed_formats: ['jpg', 'png'],
+      allowed_formats: ["jpg", "png"],
       public_id: file.originalname,
-      transformation: [{ width: 68, height: 68, crop: 'scale' }],
+      transformation: [{ width: 68, height: 68, crop: "scale" }],
     };
   },
 });
@@ -32,11 +32,3 @@ const storage = new CloudinaryStorage({
 const upload = multer({ storage });
 
 module.exports = upload;
-
-// folder: 'TaskPro-avatars',
-//   allowedFormats: ['jpg', 'png'],
-//   filename: (req, file, cb) => {
-//     const fileName = `avatar_${req.user.userId}`;
-//     cb(null, fileName);
-//   },
-//   transformation: [{ width: 68, height: 68, crop: 'scale' }],

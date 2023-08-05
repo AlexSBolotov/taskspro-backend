@@ -156,6 +156,210 @@
         }
       }
     },
+    "/users/logout": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "User logout",
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "204": {
+            "description": "Successful operation",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (login information is wrong)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found (requested resource could not be found)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response404"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/current": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get current user's info",
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (login information is wrong)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found (requested resource could not be found)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response404"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/update": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update user's info",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (missing field)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse400"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (login information is wrong)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found (requested resource could not be found)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response404"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict (user with stated email is already exist)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse409"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/themes": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update app theme",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateThemeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateThemeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (missing field/ invalid theme value)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddResponse400"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (login information is wrong)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found (requested resource could not be found)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response404"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/boards": {
       "post": {
         "tags": ["Boards"],
@@ -217,7 +421,7 @@
             }
           },
           "409": {
-            "description": "Conflict (board already exist)",
+            "description": "Conflict (user with stated email is already exist)",
             "content": {
               "application/json": {
                 "schema": {
@@ -1124,7 +1328,7 @@
               "avatarURL": {
                 "type": "string",
                 "description": "User's avatar URL",
-                "example": "https://monosnap.com/file/p3erqwEE6b2qI2rjCSPXIMQPxconYV"
+                "example": "https://res.cloudinary.com/doepexhxk/image/upload/v1691154725/avatars/ua-flag.png.png"
               },
               "boards": {
                 "type": "array",
@@ -1168,7 +1372,7 @@
             "name": "User101",
             "email": "User101@mail.com",
             "theme": "dark",
-            "avatarURL": "",
+            "avatarURL": "https://res.cloudinary.com/doepexhxk/image/upload/v1691154725/avatars/ua-flag.png.png",
             "boards": [
               {
                 "_id": "64c772d4906c009cfba4f8a9",
@@ -1205,6 +1409,114 @@
         },
         "example": {
           "message": "Email or password is wrong"
+        }
+      },
+      "UpdateUserRequest": {
+        "type": "object",
+        "required": ["name", "email"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "User101"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email",
+            "example": "User101@mail.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          },
+          "theme": {
+            "type": "string",
+            "description": "App theme",
+            "example": "dark"
+          },
+          "avatarURL": {
+            "type": "string",
+            "description": "User's avatar URL",
+            "format": "binary",
+            "example": "https://res.cloudinary.com/doepexhxk/image/upload/v1691154725/avatars/ua-flag.png.png"
+          }
+        }
+      },
+      "UpdateUserResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "Accsess token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YzZjMWY3ZDg3NmQ3NWY1MTQzYThhMCIsImlhdCI6MTY5MTA2NTQwMCwiZXhwIjoxNjkxMTUxODAwfQ.-09Gio58q4KYVeElnDbStvayWiMUZlOS2HcW3QPqgBY"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "User's name",
+                "example": "User102"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email",
+                "example": "User101@mail.com"
+              },
+              "theme": {
+                "type": "string",
+                "description": "App theme",
+                "example": "dark"
+              },
+              "avatarURL": {
+                "type": "string",
+                "description": "User's avatar URL",
+                "example": "https://res.cloudinary.com/doepexhxk/image/upload/v1691154725/avatars/ua-flag.png.png"
+              }
+            }
+          }
+        },
+        "example": {
+          "name": "User102",
+          "email": "User101@mail.com",
+          "theme": "dark",
+          "avatarURL": "https://res.cloudinary.com/doepexhxk/image/upload/v1691154725/avatars/ua-flag.png.png"
+        }
+      },
+      "UpdateThemeRequest": {
+        "type": "object",
+        "required": ["theme"],
+        "properties": {
+          "theme": {
+            "type": "string",
+            "description": "App theme",
+            "example": "light"
+          }
+        }
+      },
+      "UpdateThemeResponse": {
+        "type": "object",
+        "properties": {
+          "type": "object",
+          "properties": {
+            "theme": {
+              "type": "string",
+              "description": "App theme",
+              "example": "light"
+            },
+            "message": {
+              "type": "string",
+              "description": "Succesfull operapion's message",
+              "example": "The theme has been changed"
+            }
+          }
+        },
+        "example": {
+          "theme": "light",
+          "avatarURL": "The theme has been changed"
         }
       },
       "AddBoardRequest": {
