@@ -1,4 +1,7 @@
 const nodemailer = require("nodemailer");
+const ejs = require("ejs");
+const fs = require("fs");
+const path = require("path");
 const { ctrlWrapper, HttpError } = require("../helpers");
 
 const config = {
@@ -15,21 +18,23 @@ const transporter = nodemailer.createTransport(config);
 
 const sendEmail = async (req, res) => {
   const { email, comment } = req.body;
-
-  const userEmail = {
-    from: process.env.UKRNET_EMAIL,
-    to: email,
-    subject: "Help TaskPro",
-    text: comment,
-    html: `<p>We have recieved your help request. Thanks for your comment. Our client service will connect you as soon as possible.</p><div>Best regards, TaskPro Client Service</div>`,
-  };
-
-  await transporter.sendMail(userEmail, (error, info) => {
-    if (error) {
-      throw HttpError(400, `Email error: ${error.message}`);
-    }
-  });
-  res.status(200).json({ message: "Message sent successfully" });
+  try {
+    const emailTemplate = fs.readFileSync(
+      path.join(__dirname, "emailTemplate.ejs"),
+      "utf-8"
+    );
+    const renderedEmail = ejs.render(emailTemplate);
+    const mailOptions = {
+      from: "task-pro-help@ukr.net",
+      to: email,
+      subject: comment,
+      html: renderedEmail,
+    };
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ message: "Message sent successfully" });
+  } catch (error) {
+    throw HttpError(400, `Email error: ${error.message}`);
+  }
 };
 
 module.exports = {
