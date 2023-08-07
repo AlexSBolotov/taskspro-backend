@@ -21,6 +21,10 @@
       "description": "Authorization/User endpoints"
     },
     {
+      "name": "Help",
+      "description": "Help endpoint"
+    },
+    {
       "name": "Boards",
       "description": "Boards endpoints"
     },
@@ -323,6 +327,67 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UpdateThemeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (missing field/ invalid theme value)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddResponse400"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (login information is wrong)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found (requested resource could not be found)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response404"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/help": {
+      "post": {
+        "tags": ["Help"],
+        "summary": "Send help mail",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Help mail body",
+          "required": true,
+
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HelpRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HelpResponse"
                 }
               }
             }
@@ -2137,6 +2202,35 @@
         },
         "example": {
           "message": "Cast to ObjectId failed for value \"64c92c1979888f7897f38c0\" (type string) at path \"column\""
+        }
+      },
+      "HelpRequest": {
+        "type": "object",
+        "required": ["email", "comment"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User email for sending response",
+            "example": "user123@mail.com"
+          },
+          "comment": {
+            "type": "string",
+            "description": "User's help request",
+            "example": "I need help!"
+          }
+        }
+      },
+      "HelpResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Successful operation's message",
+            "example": "Message sent successfully"
+          }
+        },
+        "example": {
+          "message": "Message sent successfully"
         }
       }
     },
