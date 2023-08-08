@@ -2,12 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "version": "1.0.1",
-    "title": "Tasckpro",
-    "description": "Backend documentation for Tasckpro-project",
-    "license": {
-      "name": "MIT",
-      "url": "https://opensource.org/licenses/MIT"
-    }
+    "title": "Tasckpro API docs",
+    "description": "Backend documentation for Tasckpro-project_<br></br>**Taskpro API**<br></br>This project is a task-manager web-application that allows users to keep a convenient account of their own tasks. Main goal of the project is to provide users with tools to monitor status of current and future cases, create, organize, plan and prioritize their tasks.<br></br>Project provides possibility of user's registration, their authorization, editing and personalization of the profile. Users can create and track their tasks, categorize them, edit and delete them.<br></br>Application has a clear and friendly user-interface that allows to conveniently and quickly perform all the necessary actions. Possibility of personalizing of interface has been implemented - from choosing application theme to changing background image. The project also ensures user security through password encryption and token-based identification.<br></br>**Functional capabilities:**<br></br>User registration and authorization, profile editing, including adding an avatar picture<br></br>Changing color theme of application<br></br>Adding, viewing, editing and deleting tasks, their multi-level sorting by categories<br></br>Filter tasks by priority and move between categories<br></br>**Technology stack used in the project:**<br></br>Node.js - JavaScript execution environment on server<br></br>Express.js - framework for developing web applications on Node.js<br></br>MongoDB - NoSQL database<br></br>Mongoose - library for working with MongoDB in Node.js<br></br>jsonwebtoken and bcryptjs libraries - for creating, validating tokens and hashing passwords<br></br>Cloudinary and nodemailer libraries - for working with remote images and sending emails<br></br>swagger-ui-express library - for creating backend swagger-documentation<br></br>**Links:**<br></br>[Backend repository](https://github.com/AlexSBolotov/taskspro-backend.git)<br></br>[Project's live page](https://valpvf.github.io/taskpro)<br></br>**Developers:**<br></br>[Аліна Марчук](mailto:misselle60@gmail.com)<br></br>[Валерій Пожидаєв](mailto:val.pvf@gmail.com)<br></br>[Олексій Болотов](mailto:oleksii.bolotov@gmail.com)<br></br>[Ярослав Клімась](mailto:yarklim@gmail.com)<br></br>[Олена Коренєва](mailto:olena.korenieva@gmail.com)<br></br>[Максим Мироненко](mailto:kongfuri3228@gmail.com)<br></br>[Данило Дудаєв](mailto:roffrooff@gmail.com)<br></br>[Максим Оленюх](mailto:maxim.oleniukh@gmail.com)<br></br>"
   },
   "consumes": ["application/json", "multipart/form-data"],
   "produces": ["application/json"],
@@ -42,7 +38,6 @@
       "post": {
         "tags": ["Users"],
         "summary": "User registration",
-        "parameters": [],
         "requestBody": {
           "description": "Registration's object",
           "required": true,
@@ -103,7 +98,6 @@
       "post": {
         "tags": ["Users"],
         "summary": "User login",
-        "parameters": [],
         "requestBody": {
           "description": "Login object",
           "required": true,
@@ -204,7 +198,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LoginResponse"
+                  "$ref": "#/components/schemas/CurrentUserResponse"
                 }
               }
             }
@@ -429,8 +423,6 @@
       "post": {
         "tags": ["Boards"],
         "summary": "Add board",
-        "parameters": [],
-
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Board object",
@@ -501,13 +493,13 @@
     "/api/boards/{id}": {
       "get": {
         "tags": ["Boards"],
-        "summary": "Get board's info by ID",
+        "summary": "Get board's info by board's ID",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "Board`s id",
+            "description": "Board`s ID",
             "schema": {
               "type": "string"
             }
@@ -527,7 +519,7 @@
             }
           },
           "400": {
-            "description": "Bad request (invalid board`s id)",
+            "description": "Bad request (invalid board`s ID)",
             "content": {
               "application/json": {
                 "schema": {
@@ -570,13 +562,13 @@
       },
       "patch": {
         "tags": ["Boards"],
-        "summary": "Edit board's info by ID",
+        "summary": "Edit board's info by board's ID",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "Board`s id",
+            "description": "Board`s ID",
             "schema": {
               "type": "string"
             }
@@ -608,7 +600,7 @@
             }
           },
           "400": {
-            "description": "Bad request (invalid board`s id/ missing required field)",
+            "description": "Bad request (invalid board`s ID/ missing required field)",
             "content": {
               "application/json": {
                 "schema": {
@@ -651,13 +643,13 @@
       },
       "delete": {
         "tags": ["Boards"],
-        "summary": "Delete board by ID",
+        "summary": "Delete board by board's ID",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "Board`s id",
+            "description": "Board`s ID",
             "schema": {
               "type": "string"
             }
@@ -677,7 +669,7 @@
             }
           },
           "400": {
-            "description": "Bad request (invalid board`s id)",
+            "description": "Bad request (invalid board`s ID)",
             "content": {
               "application/json": {
                 "schema": {
@@ -778,7 +770,7 @@
             }
           },
           "500": {
-            "description": "Internal Server Error (invalid board's id)",
+            "description": "Internal Server Error (invalid board's ID)",
             "content": {
               "application/json": {
                 "schema": {
@@ -793,13 +785,13 @@
     "/api/columns/{id}": {
       "patch": {
         "tags": ["Columns"],
-        "summary": "Edit column's info by ID",
+        "summary": "Edit column's info by column's ID",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "Column`s id",
+            "description": "Column`s ID",
             "schema": {
               "type": "string"
             }
@@ -831,7 +823,7 @@
             }
           },
           "400": {
-            "description": "Bad request (invalid column`s id/ missing required field)",
+            "description": "Bad request (invalid column`s ID/ missing required field)",
             "content": {
               "application/json": {
                 "schema": {
@@ -871,7 +863,7 @@
             }
           },
           "500": {
-            "description": "Internal Server Error (invalid board's id)",
+            "description": "Internal Server Error (invalid board's ID)",
             "content": {
               "application/json": {
                 "schema": {
@@ -884,13 +876,13 @@
       },
       "delete": {
         "tags": ["Columns"],
-        "summary": "Delete column by ID",
+        "summary": "Delete column by column's ID",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "Columns`s id",
+            "description": "Columns`s ID",
             "schema": {
               "type": "string"
             }
@@ -910,7 +902,7 @@
             }
           },
           "400": {
-            "description": "Bad request (invalid columns`s id)",
+            "description": "Bad request (invalid columns`s ID)",
             "content": {
               "application/json": {
                 "schema": {
@@ -971,7 +963,7 @@
             }
           },
           "400": {
-            "description": "Bad request (missing required field/ invalid column's id)",
+            "description": "Bad request (missing required field/ invalid column's ID)",
             "content": {
               "application/json": {
                 "schema": {
@@ -1006,13 +998,13 @@
     "/api/tasks/{id}": {
       "patch": {
         "tags": ["Tasks"],
-        "summary": "Edit task's info by ID",
+        "summary": "Edit task's info by task's ID",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "Task`s id",
+            "description": "Task`s ID",
             "schema": {
               "type": "string"
             }
@@ -1044,7 +1036,7 @@
             }
           },
           "400": {
-            "description": "Bad request (invalid task`s id/ missing required field)",
+            "description": "Bad request (invalid task`s ID/ missing required field)",
             "content": {
               "application/json": {
                 "schema": {
@@ -1077,13 +1069,13 @@
       },
       "delete": {
         "tags": ["Tasks"],
-        "summary": "Delete task by ID",
+        "summary": "Delete task by task's ID",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "Task`s id",
+            "description": "Task`s ID",
             "schema": {
               "type": "string"
             }
@@ -1103,7 +1095,7 @@
             }
           },
           "400": {
-            "description": "Bad request (invalid task`s id)",
+            "description": "Bad request (invalid task`s ID)",
             "content": {
               "application/json": {
                 "schema": {
@@ -1138,13 +1130,13 @@
     "/api/tasks/{id}/replace": {
       "patch": {
         "tags": ["Tasks"],
-        "summary": "Replace task to another column by ID",
+        "summary": "Replace task to another column by task's ID",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "Task`s id",
+            "description": "Task`s ID",
             "schema": {
               "type": "string"
             }
@@ -1176,7 +1168,7 @@
             }
           },
           "400": {
-            "description": "Bad request (invalid task`s id/ missing required field)",
+            "description": "Bad request (invalid task`s ID/ missing required field)",
             "content": {
               "application/json": {
                 "schema": {
@@ -1206,7 +1198,7 @@
             }
           },
           "500": {
-            "description": "Internal Server Error (invalid column's id)",
+            "description": "Internal Server Error (invalid column's ID)",
             "content": {
               "application/json": {
                 "schema": {
@@ -1402,7 +1394,7 @@
                   "properties": {
                     "_id": {
                       "type": "string",
-                      "description": "Board`s id",
+                      "description": "Board`s ID",
                       "example": "64c772d4906c009cfba4f8a9"
                     },
                     "title": {
@@ -1476,6 +1468,87 @@
           "message": "Email or password is wrong"
         }
       },
+      "CurrentUserResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "User's name",
+                "example": "User101"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email",
+                "example": "User101@mail.com"
+              },
+              "theme": {
+                "type": "string",
+                "description": "App theme",
+                "example": "dark"
+              },
+              "avatarURL": {
+                "type": "string",
+                "description": "User's avatar URL",
+                "example": "https://res.cloudinary.com/doepexhxk/image/upload/v1691154725/avatars/ua-flag.png.png"
+              },
+              "boards": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "description": "Board`s ID",
+                      "example": "64c772d4906c009cfba4f8a9"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "Board`s title",
+                      "example": "Board01"
+                    },
+                    "icon": {
+                      "type": "string",
+                      "description": "Board`s icon",
+                      "example": "icon-star"
+                    },
+                    "background": {
+                      "type": "string",
+                      "description": "Board`s background",
+                      "example": "10"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "description": "Board`s last update",
+                      "example": "2023-08-03T11:32:36.216Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "user": {
+            "name": "User101",
+            "email": "User101@mail.com",
+            "theme": "dark",
+            "avatarURL": "https://res.cloudinary.com/doepexhxk/image/upload/v1691154725/avatars/ua-flag.png.png",
+            "boards": [
+              {
+                "_id": "64c772d4906c009cfba4f8a9",
+                "title": "Board01",
+                "icon": "icon-star",
+                "background": "10",
+                "updatedAt": "2023-08-03T11:32:36.216Z"
+              }
+            ]
+          }
+        }
+      },
       "UpdateUserRequest": {
         "type": "object",
         "required": ["name", "email"],
@@ -1499,6 +1572,7 @@
           "theme": {
             "type": "string",
             "description": "App theme",
+            "enum": ["light", "dark", "violet"],
             "example": "dark"
           },
           "avatar": {
@@ -1557,6 +1631,7 @@
           "theme": {
             "type": "string",
             "description": "App theme",
+            "enum": ["light", "dark", "violet"],
             "example": "light"
           }
         }
@@ -1595,11 +1670,39 @@
           "icon": {
             "type": "string",
             "description": "Board's icon",
+            "enum": [
+              "icon-project",
+              "icon-star",
+              "icon-loading",
+              "icon-puzzle",
+              "icon-container",
+              "icon-lightning",
+              "icon-colors",
+              "icon-hexagon"
+            ],
             "example": "icon-project"
           },
           "background": {
             "type": "string",
             "description": "Board's background",
+            "enum": [
+              "00",
+              "01",
+              "02",
+              "03",
+              "04",
+              "05",
+              "06",
+              "07",
+              "08",
+              "09",
+              "10",
+              "11",
+              "12",
+              "13",
+              "14",
+              "15"
+            ],
             "example": "00"
           }
         }
@@ -1609,7 +1712,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "Board's id",
+            "description": "Board's ID",
             "example": "64cc1ecaa11d08d1a3498322"
           },
           "title": {
@@ -1678,7 +1781,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "Board's id",
+            "description": "Board's ID",
             "example": "64cc1ecaa11d08d1a3498322"
           },
           "title": {
@@ -1708,7 +1811,7 @@
               "properties": {
                 "_id": {
                   "type": "string",
-                  "description": "Column's`s id",
+                  "description": "Column's`s ID",
                   "example": "64c772d4906c009cfba4f8a9"
                 },
                 "title": {
@@ -1728,7 +1831,7 @@
                     "properties": {
                       "_id": {
                         "type": "string",
-                        "description": "Task's`s id",
+                        "description": "Task's ID",
                         "example": "64c772d4906c009cfba4f8a9"
                       },
                       "title": {
@@ -1793,12 +1896,12 @@
         "properties": {
           "message": {
             "type": "string",
-            "description": "Bad request (invalid board`s id)",
-            "example": "64c772d4906c009fba4f8a9 is not valid id"
+            "description": "Bad request (invalid board`s ID)",
+            "example": "64c772d4906c009fba4f8a9 is not valid ID"
           }
         },
         "example": {
-          "message": "64c772d4906c009fba4f8a9 is not valid id"
+          "message": "64c772d4906c009fba4f8a9 is not valid ID"
         }
       },
       "EditBoardRequest": {
@@ -1827,7 +1930,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "Board's id",
+            "description": "Board's ID",
             "example": "64cc1ecaa11d08d1a3498322"
           },
           "title": {
@@ -1864,7 +1967,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "Board's id",
+            "description": "Board's ID",
             "example": "64cc1ecaa11d08d1a3498322"
           },
           "message": {
@@ -1880,7 +1983,7 @@
         "properties": {
           "board": {
             "type": "string",
-            "description": "Board's id",
+            "description": "Board's ID",
             "example": "64c772d4906c009cfba4f8a9"
           },
           "title": {
@@ -1895,7 +1998,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "Column's id",
+            "description": "Column's ID",
             "example": "64cb9cb06d0b074081d5fa91"
           },
           "title": {
@@ -1905,7 +2008,7 @@
           },
           "board": {
             "type": "string",
-            "description": "Board's id",
+            "description": "Board's ID",
             "example": "64c772d4906c009cfba4f8a9"
           },
 
@@ -1946,7 +2049,7 @@
         "properties": {
           "message": {
             "type": "string",
-            "description": "Internal Server Error (invalid board's id)",
+            "description": "Internal Server Error (invalid board's ID)",
             "example": "Cast to ObjectId failed for value \"64c772d4906c09cfba4f8a9\" (type string) at path \"_id\" for model \"board\""
           }
         },
@@ -1960,7 +2063,7 @@
         "properties": {
           "board": {
             "type": "string",
-            "description": "Board's id",
+            "description": "Board's ID",
             "example": "64c772d4906c009cfba4f8a9"
           },
           "title": {
@@ -1975,7 +2078,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "Column's id",
+            "description": "Column's ID",
             "example": "64cc1ecaa11d08d1a3498322"
           },
           "title": {
@@ -1990,7 +2093,7 @@
           },
           "board": {
             "type": "string",
-            "description": "Board's id",
+            "description": "Board's ID",
             "example": "64c772d4906c009cfba4f8a9"
           }
         },
@@ -2006,7 +2109,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "Column's id",
+            "description": "Column's ID",
             "example": "64cc1ecaa11d08d1a3498322"
           },
           "message": {
@@ -2026,7 +2129,7 @@
         "properties": {
           "column": {
             "type": "string",
-            "description": "Column's id",
+            "description": "Column's ID",
             "example": "64c772d4906c009cfba4f8a9"
           },
           "title": {
@@ -2041,7 +2144,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "Tasks's id",
+            "description": "Tasks's ID",
             "example": "64cb9cb06d0b074081d5fa91"
           },
           "title": {
@@ -2096,6 +2199,7 @@
           "priority": {
             "type": "string",
             "description": "Tasks's priority",
+            "enum": ["Without", "Low", "Medium", "High"],
             "example": "Medium"
           },
           "deadline": {
@@ -2110,7 +2214,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "Tasks's id",
+            "description": "Tasks's ID",
             "example": "64cb9cb06d0b074081d5fa91"
           },
           "title": {
@@ -2153,7 +2257,7 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "Task`s id",
+            "description": "Task`s ID",
             "example": "64cc1ecaa11d08d1a3498322"
           },
           "message": {
@@ -2173,7 +2277,7 @@
         "properties": {
           "column": {
             "type": "string",
-            "description": "Column's id",
+            "description": "Column's ID to replace in",
             "example": "64c772d4906c009cfba4f8a9"
           }
         }
@@ -2196,7 +2300,7 @@
         "properties": {
           "message": {
             "type": "string",
-            "description": "Internal Server Error (invalid column's id)",
+            "description": "Internal Server Error (invalid column's ID)",
             "example": "Cast to ObjectId failed for value \"64c92c1979888f7897f38c0\" (type string) at path \"column\""
           }
         },

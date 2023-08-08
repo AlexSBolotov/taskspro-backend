@@ -2,10 +2,7 @@ const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 const { handleMongooseError } = require("../helpers");
 
-const emailRegexp =
-  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-const passRegex = /^[a-zA-Z0-9]+$/;
-const themeTypes = ["light", "dark", "violet"];
+const { emailRegexp, passRegex, themeTypes } = require("../constants.js");
 
 const userSchema = new Schema(
   {
@@ -36,6 +33,7 @@ const userSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: "board",
+        default: [],
       },
     ],
     token: {
