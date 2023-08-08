@@ -26,6 +26,9 @@ const updateTask = async (req, res) => {
   const { _id: user } = req.user;
   const { id } = req.params;
   const askedTask = await Task.findById(id);
+  if (!askedTask) {
+    throw HttpError(404, `Not found`);
+  }
   if (askedTask.user.toString() !== user.toString()) {
     throw HttpError(404, `Not found`);
   }
@@ -44,6 +47,9 @@ const replaceTask = async (req, res) => {
   const { _id: user } = req.user;
   const { id } = req.params;
   const askedTask = await Task.findById(id);
+  if (!askedTask) {
+    throw HttpError(404, `Not found`);
+  }
   if (askedTask.user.toString() !== user.toString()) {
     throw HttpError(404, `Not found`);
   }
@@ -76,6 +82,9 @@ const deleteTask = async (req, res) => {
   const { _id: user } = req.user;
   const { id } = req.params;
   const askedTask = await Task.findById(id);
+  if (!askedTask) {
+    throw HttpError(404, "Not found");
+  }
   if (askedTask.user.toString() !== user.toString()) {
     throw HttpError(404, `Not found`);
   }

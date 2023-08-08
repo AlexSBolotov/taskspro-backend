@@ -80,6 +80,9 @@ const updateBoard = async (req, res) => {
   const { _id: user } = req.user;
   const { id } = req.params;
   const askedBoard = await Board.findById(id);
+  if (!askedBoard) {
+    throw HttpError(404, `Not found`);
+  }
   if (askedBoard.user.toString() !== user.toString()) {
     throw HttpError(404, `Not found`);
   }
