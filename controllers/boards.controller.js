@@ -6,6 +6,8 @@ const {
 } = require("../helpers");
 const { Board } = require("../models/board.model");
 const { User } = require("../models/user.model");
+const { Column } = require("../models/column.model");
+const { Task } = require("../models/task.model");
 
 const getOneBoard = async (req, res) => {
   const { id } = req.params;
@@ -102,9 +104,23 @@ const deleteBoard = async (req, res) => {
   const { _id: user } = req.user;
   const { id } = req.params;
   const askedBoard = await Board.findById(id);
+  if (!askedBoard) {
+    throw HttpError(404, "Not found");
+  }
   if (askedBoard.user.toString() !== user.toString()) {
     throw HttpError(404, `Not found`);
   }
+
+  askedBoard.columns.map(async (column) => {
+    const askedColumn = await Column.findById(column);
+    if (!askedColumn) {
+      throw HttpError(404, "Not found");
+    }
+    askedColumn.tasks.map(async (task) => {
+      await Task.findByIdAndDelete(task);
+    });
+    await Column.findByIdAndDelete(column);
+  });
   const result = await Board.findByIdAndDelete(id);
   if (!result) {
     throw HttpError(404, "Not found");
