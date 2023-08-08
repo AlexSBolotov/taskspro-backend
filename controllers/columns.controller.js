@@ -6,6 +6,7 @@ const {
 } = require("../helpers");
 const { Column } = require("../models/column.model");
 const { Board } = require("../models/board.model");
+const { Task } = require("../models/task.model");
 
 const postColumn = async (req, res) => {
   const { _id: user } = req.user;
@@ -66,6 +67,9 @@ const deleteColumn = async (req, res) => {
   if (askedColumn.user.toString() !== user.toString()) {
     throw HttpError(404, `Not found`);
   }
+  askedColumn.tasks.map(async (task) => {
+    await Task.findByIdAndDelete(task);
+  });
   const result = await Column.findByIdAndDelete(id);
   if (!result) {
     throw HttpError(404, "Not found");
