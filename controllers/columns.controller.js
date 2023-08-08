@@ -64,6 +64,9 @@ const deleteColumn = async (req, res) => {
   const { _id: user } = req.user;
   const { id } = req.params;
   const askedColumn = await Column.findById(id);
+  if (!askedColumn) {
+    throw HttpError(404, "Not found");
+  }
   if (askedColumn.user.toString() !== user.toString()) {
     throw HttpError(404, `Not found`);
   }
