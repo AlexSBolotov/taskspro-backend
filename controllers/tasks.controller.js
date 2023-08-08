@@ -6,6 +6,9 @@ const postTask = async (req, res) => {
   const { _id: user } = req.user;
   const { column } = req.body;
   const result = await Task.create({ ...req.body, user });
+  if (!result) {
+    throw HttpError(404, `Not found`);
+  }
   await Column.findByIdAndUpdate(
     column,
     {
@@ -18,8 +21,14 @@ const postTask = async (req, res) => {
     .status(201)
     .json({ _id, title, description, priority, deadline, updatedAt });
 };
+
 const updateTask = async (req, res) => {
+  const { _id: user } = req.user;
   const { id } = req.params;
+  const askedTask = await Task.findById(id);
+  if (askedTask.user.toString() !== user.toString()) {
+    throw HttpError(404, `Not found`);
+  }
 
   const result = await Task.findByIdAndUpdate(id, req.body, { new: true });
   if (!result) {
@@ -30,13 +39,18 @@ const updateTask = async (req, res) => {
     .status(200)
     .json({ _id, title, description, priority, deadline, updatedAt });
 };
+
 const replaceTask = async (req, res) => {
+  const { _id: user } = req.user;
   const { id } = req.params;
-  // const { column: oldColumn } = req.task;
+  const askedTask = await Task.findById(id);
+  if (askedTask.user.toString() !== user.toString()) {
+    throw HttpError(404, `Not found`);
+  }
   const { column: newColumn } = req.body;
-  console.log(newColumn);
+
   const { column: oldColumn } = await Task.findById(id);
-  console.log(oldColumn);
+
   const result = await Task.findByIdAndUpdate(id, req.body, { new: true });
   if (!result) {
     throw HttpError(404, `Not found`);
@@ -57,8 +71,14 @@ const replaceTask = async (req, res) => {
   );
   res.status(200).json({ message: "Task replaced" });
 };
+
 const deleteTask = async (req, res) => {
+  const { _id: user } = req.user;
   const { id } = req.params;
+  const askedTask = await Task.findById(id);
+  if (askedTask.user.toString() !== user.toString()) {
+    throw HttpError(404, `Not found`);
+  }
   const result = await Task.findByIdAndDelete(id);
   if (!result) {
     throw HttpError(404, "Not found");

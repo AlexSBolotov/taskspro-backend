@@ -8,7 +8,6 @@ const { SECRET_KEY } = process.env;
 
 const registerUser = async (req, res) => {
   const { email, password } = req.body;
-
   const user = await User.findOne({ email });
   if (user) {
     throw HttpError(409, "Email in use");
@@ -17,15 +16,9 @@ const registerUser = async (req, res) => {
   const newUser = await User.create({
     ...req.body,
     password: hashPassword,
-    theme: "dark",
-    avatarURL: "",
-    boards: [],
   });
-
   const { _id: id } = newUser;
-
   const payload = { id };
-
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1d" });
 
   await User.findByIdAndUpdate(id, { token }, { new: true })
@@ -62,6 +55,7 @@ const loginUser = async (req, res) => {
   }
   const payload = { id: user._id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
+
   await User.findByIdAndUpdate(user._id, { token }, { new: true })
     .populate("boards", {
       _id: 1,
@@ -131,19 +125,15 @@ const updateTheme = async (req, res) => {
 const updateProfileUser = async (req, res) => {
   const { _id: id, email } = req.user;
   const { email: newEmail, name: newName, password: newPassword } = req.body;
-
   const isEmailInUse = await User.findOne({ email: newEmail });
   if (email !== newEmail && isEmailInUse) throw HttpError(409, "Email in use");
-
   const userNewData = {
     email: newEmail,
     name: newName,
   };
-
   if (newPassword) {
     userNewData.password = await bcryptjs.hash(newPassword, 10);
   }
-
   if (req.file) {
     userNewData.avatarURL = req.file.path;
   }

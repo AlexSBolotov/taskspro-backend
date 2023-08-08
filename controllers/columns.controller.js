@@ -19,8 +19,10 @@ const postColumn = async (req, res) => {
   if (isColumnExist) {
     throw HttpError(409, `Column ${req.body.title} already exist`);
   }
-
   const result = await Column.create({ ...req.body, user });
+  if (!result) {
+    throw HttpError(404, `Not found`);
+  }
   await Board.findByIdAndUpdate(
     boardId,
     {
@@ -33,7 +35,12 @@ const postColumn = async (req, res) => {
 };
 
 const updateColumn = async (req, res) => {
+  const { _id: user } = req.user;
   const { id } = req.params;
+  const askedColumn = await Column.findById(id);
+  if (askedColumn.user.toString() !== user.toString()) {
+    throw HttpError(404, `Not found`);
+  }
   const { board: boardId } = req.body;
   const isColumnExist = await isElementDuplicateUpdate(
     "columns",
@@ -53,7 +60,12 @@ const updateColumn = async (req, res) => {
 };
 
 const deleteColumn = async (req, res) => {
+  const { _id: user } = req.user;
   const { id } = req.params;
+  const askedColumn = await Column.findById(id);
+  if (askedColumn.user.toString() !== user.toString()) {
+    throw HttpError(404, `Not found`);
+  }
   const result = await Column.findByIdAndDelete(id);
   if (!result) {
     throw HttpError(404, "Not found");

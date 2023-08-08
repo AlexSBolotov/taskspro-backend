@@ -7,26 +7,9 @@ const {
 const { Board } = require("../models/board.model");
 const { User } = require("../models/user.model");
 
-// const geAllContacts = async (req, res) => {
-//   const { _id: owner } = req.user;
-//   const { page = 1, limit = 20, favorite } = req.query;
-//   const skip = (page - 1) * limit;
-//   if (favorite === undefined) {
-//     const result = await Contact.find({ owner }, "", {
-//       skip,
-//       limit,
-//     }).populate("owner", "email");
-//     res.status(200).json(result);
-//   } else {
-//     const result = await Contact.find({ owner, favorite }, "", {
-//       skip,
-//       limit,
-//     }).populate("owner", "email");
-//     res.status(200).json(result);
-//   }
-// };
 const getOneBoard = async (req, res) => {
   const { id } = req.params;
+  const { _id: userId } = req.user;
   const result = await Board.findById(id).populate({
     path: "columns",
     select: {
@@ -50,6 +33,9 @@ const getOneBoard = async (req, res) => {
   if (!result) {
     throw HttpError(404, `Not found`);
   }
+  if (result.user.toString() !== userId.toString()) {
+    throw HttpError(404, `Not found`);
+  }
   const { _id, title, icon, background, columns, updatedAt } = result;
   res.status(200).json({
     _id,
@@ -60,6 +46,7 @@ const getOneBoard = async (req, res) => {
     columns,
   });
 };
+
 const postBoard = async (req, res) => {
   const { _id: user } = req.user;
   const isBoardExist = await isElementDuplicateCreate(
@@ -73,6 +60,9 @@ const postBoard = async (req, res) => {
   }
 
   const result = await Board.create({ ...req.body, user });
+  if (!result) {
+    throw HttpError(404, `Not found`);
+  }
   await User.findByIdAndUpdate(
     user._id,
     {
@@ -83,16 +73,20 @@ const postBoard = async (req, res) => {
   const { _id, title, icon, background, updatedAt, columns } = result;
   res.status(201).json({ _id, title, icon, background, updatedAt, columns });
 };
+
 const updateBoard = async (req, res) => {
   const { _id: user } = req.user;
   const { id } = req.params;
+  const askedBoard = await Board.findById(id);
+  if (askedBoard.user.toString() !== user.toString()) {
+    throw HttpError(404, `Not found`);
+  }
   const isBoardExist = await isElementDuplicateUpdate(
     "boards",
     User,
     user,
     req
   );
-  console.log(isBoardExist);
   if (isBoardExist) {
     throw HttpError(409, `Board ${req.body.title} already exist`);
   }
@@ -107,6 +101,10 @@ const updateBoard = async (req, res) => {
 const deleteBoard = async (req, res) => {
   const { _id: user } = req.user;
   const { id } = req.params;
+  const askedBoard = await Board.findById(id);
+  if (askedBoard.user.toString() !== user.toString()) {
+    throw HttpError(404, `Not found`);
+  }
   const result = await Board.findByIdAndDelete(id);
   if (!result) {
     throw HttpError(404, "Not found");
@@ -122,11 +120,8 @@ const deleteBoard = async (req, res) => {
 };
 
 module.exports = {
-  //   geAllContacts: ctrlWrapper(geAllContacts),
-  //   getOneContact: ctrlWrapper(getOneContact),
   getOneBoard: ctrlWrapper(getOneBoard),
   postBoard: ctrlWrapper(postBoard),
   updateBoard: ctrlWrapper(updateBoard),
-  //   updateContactStatus: ctrlWrapper(updateContactStatus),
   deleteBoard: ctrlWrapper(deleteBoard),
 };

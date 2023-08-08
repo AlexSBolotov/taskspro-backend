@@ -2,14 +2,13 @@ const { Schema, model } = require("mongoose");
 const { handleMongooseError } = require("../helpers");
 const Joi = require("joi");
 
-const ptiorityTypes = ["Without", "Low", "Medium", "High"];
+const { ptiorityTypes } = require("../constants.js");
 
 const taskSchema = new Schema(
   {
     title: {
       type: String,
       required: [true, "Set title for task"],
-      // unique: true,
     },
     description: {
       type: String,
@@ -51,6 +50,7 @@ const addTaskSchema = Joi.object({
     "any.required": "missing required column field",
   }),
 });
+
 const updateTaskSchema = Joi.object({
   title: Joi.string().required().messages({
     "any.required": "missing required title field",
@@ -68,6 +68,7 @@ const updateTaskSchema = Joi.object({
     "any.required": "missing required deadline field",
   }),
 });
+
 const replaceTaskSchema = Joi.object({
   column: Joi.string().required().messages({
     "any.required": "missing required column field",

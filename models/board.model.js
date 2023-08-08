@@ -2,40 +2,13 @@ const { Schema, model } = require("mongoose");
 const { handleMongooseError } = require("../helpers");
 const Joi = require("joi");
 
-const iconTypes = [
-  "icon-project",
-  "icon-star",
-  "icon-loading",
-  "icon-puzzle",
-  "icon-container",
-  "icon-lightning",
-  "icon-colors",
-  "icon-hexagon",
-];
-const backgroundTypes = [
-  "00",
-  "01",
-  "02",
-  "03",
-  "04",
-  "05",
-  "06",
-  "07",
-  "08",
-  "09",
-  "10",
-  "11",
-  "12",
-  "13",
-  "14",
-  "15",
-];
+const { iconTypes, backgroundTypes } = require("../constants.js");
+
 const boardSchema = new Schema(
   {
     title: {
       type: String,
       required: [true, "Set title for board"],
-      // unique: true,
     },
     icon: {
       type: String,

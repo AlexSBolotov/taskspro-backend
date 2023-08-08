@@ -7,7 +7,6 @@ const columnSchema = new Schema(
     title: {
       type: String,
       required: [true, "Set title for column"],
-      // unique: true,
     },
     user: {
       type: Schema.Types.ObjectId,
